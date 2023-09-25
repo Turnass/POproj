@@ -19,12 +19,14 @@ public class Spreadsheet implements Serializable {
     private int _numLines;
     private int _numColumns;
     private ArrayList<User> _users = new ArrayList<>();
+    private Cell[] _cells = null;
 
     // FIXME define attributes
     // FIXME define contructor(s)
     public Spreadsheet(int numLines, int numColumns, User user){
         _numLines = numLines;
         _numColumns = numColumns;
+        _cells = new Cell[_numLines *  _numColumns];
         addUser(user);
     }
 
