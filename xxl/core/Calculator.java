@@ -34,6 +34,9 @@ public class Calculator implements Serializable {
         _repo.addSpreadsheet(_spreadsheet);
     }
 
+    public Spreadsheet getSpreadsheet(){
+        return _spreadsheet;
+    }
     public void setSpreadsheet(){
 
     }
@@ -73,6 +76,9 @@ public class Calculator implements Serializable {
         _filename = filename;
     }
 
+    public String getFilename() {
+        return _filename;
+    }
     /**
      * @param _filename name of the file containing the serialized application's state
      *        to load.
