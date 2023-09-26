@@ -4,7 +4,11 @@ public abstract class Literal extends Content{
 
 
     @Override
-    public Literal getValue() {
-        return this;
+    public String getValue() {
+        return ;
+    }
+
+    public boolean isLiteral(){
+        return true;
     }
 }
