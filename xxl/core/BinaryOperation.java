@@ -1,4 +1,4 @@
 package xxl.core;
 
-public class BinaryOperation {
+public class BinaryOperation extends Operation{
 }

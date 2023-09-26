@@ -1,4 +1,4 @@
 package xxl.core;
 
-public interface Operation {
+public abstract class Operation extends Content{
 }

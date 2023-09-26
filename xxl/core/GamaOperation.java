@@ -1,4 +1,4 @@
 package xxl.core;
 
-public class GamaOperation {
+public class GamaOperation extends Operation{
 }
