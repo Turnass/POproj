@@ -20,6 +20,7 @@ public class Spreadsheet implements Serializable {
     private int _numColumns;
     private ArrayList<User> _users = new ArrayList<>();
     private Cell[][] _cells = null;
+    private CutBuffer _cutBuffer;
 
     // FIXME define attributes
     // FIXME define contructor(s)

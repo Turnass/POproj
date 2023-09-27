@@ -2,8 +2,8 @@ package xxl.core;
 
 public abstract class Content {
 
-    protected Literal _value;
-    public abstract String getValue();
+    public abstract String getValueAsString();
+    public abstract int getValueAsInt();
 
     public abstract boolean isLiteral();
 
