@@ -58,6 +58,10 @@ public class Spreadsheet implements Serializable {
       gamma.deleteContent();
   }
 
+  public void searchValue(String Value){}
+
+  public void searchFunction(String operationName){}
+
     public void addUser(User user) {
         _users.add(user);
     }
