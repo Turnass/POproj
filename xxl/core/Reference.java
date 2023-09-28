@@ -3,11 +3,25 @@ package xxl.core;
 public class Reference extends Content{
 
     private Cell _cell;
-    public boolean isLiteral(){
-        return false;
+
+    @Override
+    public String getValueAsString() {
+        return _cell.getContent().getValueAsString();
     }
 
-    public Literal getValue(){
-        return _cell.getContent().getValue();
+    @Override
+    public int getValueAsInt() {
+        return _cell.getContent().getValueAsInt();
+    }
+
+
+    @Override
+    public String toString() {
+        return "=" + _cell.toString();
+    }
+
+    @Override
+    public String printContent() {
+        return "";
     }
 }

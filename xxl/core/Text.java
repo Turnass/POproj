@@ -3,14 +3,22 @@ package xxl.core;
 public class Text extends Literal{
     private String _value;
 
+
+    @Override
     public String getValueAsString() {
-        return _value;
+        return null;
     }
+
+    @Override
     public int getValueAsInt(){
-        throw new ...;
+        //throw new ...;
+        return 0;
     }
 
     public String toString(){
         return _value;
     }
+
+    @Override
+    public String printContent() {return toString();}
 }

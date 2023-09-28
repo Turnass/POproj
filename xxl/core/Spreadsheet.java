@@ -29,19 +29,34 @@ public class Spreadsheet implements Serializable {
         _numColumns = numColumns;
         _cells = new Cell[_numLines][_numColumns];
         addUser(user);
+
+        for (int i = 0; i < _numLines; i++){
+            for (int j = 0; j < _numColumns;j++){
+                _cells[i][j] = null;
+            }
+        }
     }
+
 
     // FIXME define methods
 
     /**
-     * Insert specified content in specified range.
-     *
-     * @param rangeSpecification
-     * @param contentSpecification
-     */
-    public void insertContents(String rangeSpecification, String contentSpecification) throws UnrecognizedEntryException /* FIXME maybe add exceptions */ {
-        //FIXME implement method
-    }
+   * Insert specified content in specified address.
+   *
+   * @param row the row of the cell to change
+   * @param column the column of the cell to change
+   * @param contentSpecification the specification in a string format of the content to put
+   *        in the specified cell.
+   */
+  public void insertContent(int row, int column, String contentSpecification) throws UnrecognizedEntryException /* FIXME maybe add exceptions */ {
+    //FIXME implement method
+  }
+  public void insertGamaContent(Gamma gamma, Content content){
+      gamma.insertContent(content);
+  }
+  public void deleteGamaContent(Gamma gamma){
+      gamma.deleteContent();
+  }
 
     public void addUser(User user) {
         _users.add(user);

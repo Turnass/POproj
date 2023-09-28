@@ -15,4 +15,15 @@ public class Cell {
         return _content;
     }
 
+    public void setContent(Content content){
+        _content = content;
+    }
+
+    public String printCell(){
+        return _line + ";" + _column + "|" + getContent().printContent();
+    }
+    @Override
+    public String toString() {
+        return _line + ";" + _column + "|" + getContent().toString();
+    }
 }

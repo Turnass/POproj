@@ -5,6 +5,6 @@ public abstract class Content {
     public abstract String getValueAsString();
     public abstract int getValueAsInt();
 
-    public abstract boolean isLiteral();
+    public abstract String printContent();
 
 }

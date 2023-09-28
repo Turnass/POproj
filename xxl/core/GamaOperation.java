@@ -1,6 +1,6 @@
 package xxl.core;
 
-public class GamaOperation extends Operation{
+public abstract class GamaOperation extends Operation{
 
     enum GamaOperations{
         AVERAGE,

@@ -11,11 +11,16 @@ public class Number extends Content{
         return _value;
     }
     public String getValueAsString(){
-        throw new ...;
+    //    throw new ...;
+        return "";
     }
 
     public String toString(){
         return "" + _value;
     }
 
+    @Override
+    public String printContent() {
+        return toString();
+    }
 }

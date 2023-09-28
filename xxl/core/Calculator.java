@@ -99,11 +99,11 @@ public class Calculator implements Serializable {
         try {
             // FIXME open import file and feed entries to new spreadsheet (in a cycle)
             //       each entry is inserted with:
-            int lines = 0//parser.
-            int columns = 0//parser.
+            int lines = 0;//parser.
+            int columns = 0;//parser.
             _spreadsheet = new Spreadsheet(lines,  columns, _activeUser);
             //while (){
-            _spreadsheet.insertContents( /*FIXME produce arguments */);
+            //_spreadsheet.insertContents( /*FIXME produce arguments */);
             // ....}
         } catch (IOException | UnrecognizedEntryException /* FIXME maybe other exceptions */ e) {
             throw new ImportFileException(/*_filename, e*/);

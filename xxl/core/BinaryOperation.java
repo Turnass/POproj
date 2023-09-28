@@ -1,11 +1,15 @@
 package xxl.core;
 
-public class BinaryOperation extends Operation{
+public abstract class BinaryOperation extends Operation{
 
-    enum BinaryOperations{
+    private BinaryOperations _operationName;
+    public enum BinaryOperations{
         ADD,
         SUB,
         MUL,
         DIV;
     }
+
+
+
 }
