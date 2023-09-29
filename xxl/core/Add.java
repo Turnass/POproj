@@ -3,7 +3,7 @@ package xxl.core;
 public class Add extends BinaryOperation{
 
 
-    public Add(Content first, Content second){
+    public Add(Cell first, Cell second){
         setOperationName(BinaryOperations.ADD);
         setArg(first, 1);
         setArg(second, 2);
@@ -11,7 +11,7 @@ public class Add extends BinaryOperation{
 
     @Override
     public int getValueAsInt() {
-        return getArg(1).getValueAsInt() + getArg(2).getValueAsInt();
+        return getArg(1).getContent().getValueAsInt() + getArg(2).getContent().getValueAsInt();
     }
 
     @Override
@@ -21,6 +21,6 @@ public class Add extends BinaryOperation{
 
     @Override
     public String toString() {
-        return "=" + getOperationName() + "(" + getArg(1).toString() + "," + getArg(2).toString() + ")";
+        return "=" + getOperationName() + "(" + getArg(1).toString() + "," + getArg(2).toString() + ")";// Fixme print args
     }
 }
