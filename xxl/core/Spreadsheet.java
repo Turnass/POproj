@@ -51,7 +51,7 @@ public class Spreadsheet implements Serializable {
   public void insertContent(int row, int column, String contentSpecification) throws UnrecognizedEntryException /* FIXME maybe add exceptions */ {
     //FIXME implement method
   }
-  public void insertGamaContent(Gamma gamma, Content content){
+  public void insertGammaContent(Gamma gamma, Content content){
       gamma.insertContent(content);
   }
   public void deleteGamaContent(Gamma gamma){

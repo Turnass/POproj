@@ -15,6 +15,8 @@ public class Gamma {
         }*/
     }
 
+    public void getContent(){}
+
     public void deleteContent(){}
 
     @Override
