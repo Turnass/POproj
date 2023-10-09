@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import xxl.core.exceptions.UnrecognizedEntryException;
+import xxl.core.exception.UnrecognizedEntryException;
 
 /**
  * Class representing a spreadsheet.
@@ -24,6 +24,11 @@ public class Spreadsheet implements Serializable {
 
     // FIXME define attributes
     // FIXME define contructor(s)
+    public Spreadsheet(int numLines, int numColumns){
+        _numLines = numLines;
+        _numColumns = numColumns;
+        _cells = new Cell[_numLines][_numColumns];
+    }
     public Spreadsheet(int numLines, int numColumns, User user){
         _numLines = numLines;
         _numColumns = numColumns;
@@ -48,7 +53,7 @@ public class Spreadsheet implements Serializable {
    * @param contentSpecification the specification in a string format of the content to put
    *        in the specified cell.
    */
-  public void insertContent(int row, int column, String contentSpecification) throws UnrecognizedEntryException /* FIXME maybe add exceptions */ {
+  public void insertContent(int row, int column, Content contentSpecification) throws UnrecognizedEntryException /* FIXME maybe add exceptions */ {
     //FIXME implement method
   }
   public void insertGammaContent(Gamma gamma, Content content){

@@ -2,10 +2,10 @@ package xxl.core;
 
 import java.io.*;
 
-import xxl.core.exceptions.ImportFileException;
-import xxl.core.exceptions.MissingFileAssociationException;
-import xxl.core.exceptions.UnavailableFileException;
-import xxl.core.exceptions.UnrecognizedEntryException;
+import xxl.core.exception.ImportFileException;
+import xxl.core.exception.MissingFileAssociationException;
+import xxl.core.exception.UnavailableFileException;
+import xxl.core.exception.UnrecognizedEntryException;
 
 // FIXME import classes
 
@@ -34,7 +34,12 @@ public class Calculator implements Serializable {
         _repo.addSpreadsheet(_spreadsheet);
     }
 
-    public Spreadsheet getSpreadsheet(){
+    /**
+     * Return the current spreadsheet.
+     *
+     * @returns the current spreadsheet of this application. This reference can be null.
+     */
+    public final Spreadsheet getSpreadsheet(){
         return _spreadsheet;
     }
     public void setSpreadsheet(){
@@ -90,7 +95,7 @@ public class Calculator implements Serializable {
     }
 
     /**
-     * Read text input file and create domain entities..
+     * Read text input file and create domain entities.
      *
      * @param _filename name of the text input file
      * @throws ImportFileException
@@ -102,11 +107,13 @@ public class Calculator implements Serializable {
             int lines = 0;//parser.
             int columns = 0;//parser.
             _spreadsheet = new Spreadsheet(lines,  columns, _activeUser);
-            //while (){
-            //_spreadsheet.insertContents( /*FIXME produce arguments */);
-            // ....}
+            Parser parser = new Parser(_spreadsheet);
+            parser.parseFile(_filename);
+            _spreadsheet.addUser(_activeUser);
+
+
         } catch (IOException | UnrecognizedEntryException /* FIXME maybe other exceptions */ e) {
-            throw new ImportFileException(/*_filename, e*/);
+            throw new ImportFileException(_filename, e);
         }
     }
 
