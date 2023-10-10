@@ -1,6 +1,7 @@
 package xxl.core;
 
 import java.io.*;
+import java.util.ArrayList;
 
 import xxl.core.exception.ImportFileException;
 import xxl.core.exception.MissingFileAssociationException;
@@ -18,6 +19,8 @@ public class Calculator implements Serializable {
     private Spreadsheet _spreadsheet = null;
     private User _activeUser = new User("root");
     private Repository _repo = new Repository(_activeUser);
+    private ArrayList<User> _users = new ArrayList<>();
+
     private String _filename;
     // FIXME add more fields if needed
 
@@ -26,6 +29,7 @@ public class Calculator implements Serializable {
     public void newUser(String name){
         _activeUser = new User(name);
         _repo.addUser(_activeUser);
+        _users.add(_activeUser);
         _spreadsheet = null;
     }
     public void newSpreadsheet(int numLines, int numColumns){
@@ -90,8 +94,20 @@ public class Calculator implements Serializable {
      * @throws UnavailableFileException if the specified file does not exist or there is
      *         an error while processing this file.
      */
-    public void load(String _filename) throws UnavailableFileException {
+    public void load(String _filename) throws UnavailableFileException, FileNotFoundException, ClassNotFoundException, ImportFileException {
         // FIXME implement serialization method
+
+            try(FileInputStream fileIn = new FileInputStream(_filename)) {
+                try (ObjectInputStream in = new ObjectInputStream(fileIn)) {
+                    _users = (ArrayList<User>) in.readObject();
+                    setFilename(_filename);
+
+                } catch (IOException e) {
+                    throw new ImportFileException(_filename, e);
+                }
+            } catch (IOException e) {
+                throw new UnavailableFileException(_filename);
+            }
     }
 
     /**
@@ -104,9 +120,6 @@ public class Calculator implements Serializable {
         try {
             // FIXME open import file and feed entries to new spreadsheet (in a cycle)
             //       each entry is inserted with:
-            int lines = 0;//parser.
-            int columns = 0;//parser.
-            _spreadsheet = new Spreadsheet(lines,  columns, _activeUser);
             Parser parser = new Parser(_spreadsheet);
             parser.parseFile(_filename);
             _spreadsheet.addUser(_activeUser);

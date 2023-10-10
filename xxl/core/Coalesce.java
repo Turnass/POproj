@@ -1,9 +1,9 @@
 package xxl.core;
 
-public class Average extends GamaOperation{
+public class Coalesce extends GamaOperation{
 
 
-    public Average(Gamma gamma){
+    public Coalesce(Gamma gamma){
         setArg(gamma);
     }
     @Override

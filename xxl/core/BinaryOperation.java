@@ -3,8 +3,8 @@ package xxl.core;
 public abstract class BinaryOperation extends Operation{
 
     private BinaryOperations _operationName;
-    private Cell _firstArg;
-    private Cell _secondArg;
+    private Content _firstArg;
+    private Content _secondArg;
 
 
     public BinaryOperations getOperationName(){
@@ -14,17 +14,17 @@ public abstract class BinaryOperation extends Operation{
         _operationName = op;
     }
 
-    public Cell getArg(int arg){
+    public Content getArg(int arg){
         if (arg == 1)
             return _firstArg;
         else
             return _secondArg;
     }
-    public void setArg(Cell cell, int arg){
+    public void setArg(Content content, int arg){
         if (arg == 1)
-            _firstArg = cell;
+            _firstArg = content;
         else
-            _secondArg = cell;
+            _secondArg = content;
     }
     @Override
     public String getValueAsString() {

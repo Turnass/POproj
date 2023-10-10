@@ -1,6 +1,6 @@
 package xxl.core;
 
-public class Number extends Content{
+public class Number extends Literal{
 
     private int _value;
     public Number(int number){

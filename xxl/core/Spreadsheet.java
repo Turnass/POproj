@@ -45,14 +45,21 @@ public class Spreadsheet implements Serializable {
 
     // FIXME define methods
 
+    public Cell getCell(int line, int column){
+        return _cells[line][column];
+    }
+    public Gamma buildGamma(String gammaDescription){
+        return new Gamma();
+    }
     /**
    * Insert specified content in specified address.
    *
    * @param row the row of the cell to change
    * @param column the column of the cell to change
-   * @param contentSpecification the specification in a string format of the content to put
+   * @param contentSpecification the specification of the content to put
    *        in the specified cell.
    */
+
   public void insertContent(int row, int column, Content contentSpecification) throws UnrecognizedEntryException /* FIXME maybe add exceptions */ {
     //FIXME implement method
   }

@@ -3,6 +3,9 @@ package xxl.core;
 public class Text extends Literal{
     private String _value;
 
+    public Text(String value){
+        _value = value;
+    }
 
     @Override
     public String getValueAsString() {

@@ -4,6 +4,9 @@ public class Reference extends Content{
 
     private Cell _cell;
 
+    public Reference(Cell cell){
+        _cell = cell;
+    }
     @Override
     public String getValueAsString() {
         return _cell.getContent().getValueAsString();

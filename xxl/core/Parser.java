@@ -42,11 +42,11 @@ class Parser {
             else if (dimension[0].equals("colunas"))
                 columns = Integer.parseInt(dimension[1]);
             else
-                throw new UnrecognizedEntryException(""+i);
+                throw new UnrecognizedEntryException("Invalid keyword on line "+i);
         }
 
         if (rows <= 0 || columns <= 0)
-            throw new UnrecognizedEntryException("Dimensões inválidas para a folha");
+            throw new UnrecognizedEntryException("Invalid spreadsheet dimensions");
 
         _spreadsheet = new Spreadsheet(rows, columns);
     }
@@ -65,39 +65,44 @@ class Parser {
             throw new UnrecognizedEntryException("Wrong format in line: " + line);
     }
 
-    // parse the begining of an expression
+    // parse the beginning of an expression
     Content parseContent(String contentSpecification) {
         char c = contentSpecification.charAt(0);
 
-        if (c == '=')
-            parseContentExpression(contentSpecification.substring(1));
-        else
-            parseLiteral(contentSpecification);
+        try {
+            if (c == '=') {
+                return parseContentExpression(contentSpecification.substring(1));
+            }else{
+                return parseLiteral(contentSpecification);
+            }
+        } catch (UnrecognizedEntryException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Literal parseLiteral(String literalExpression) throws UnrecognizedEntryException {
         if (literalExpression.charAt(0) == '\'')
-            return new literal String with literalExpression;
-    else {
+            return new Text(literalExpression);
+        else {
             try {
                 int val = Integer.parseInt(literalExpression);
-                return new literal Integer with val;
+                return new Number(val);
             } catch (NumberFormatException nfe) {
-                throw new UnrecognizedEntryException("Número inválido: " + expression);
+                throw new UnrecognizedEntryException("Número inválido: " + literalExpression);
             }
         }
     }
 
     // contentSpecification is what comes after '='
-    private Content parseContentExpression(String contentSpecification) throws UnrecognizedEntryException /more exceptions */ {
+    private Content parseContentExpression(String contentSpecification) throws UnrecognizedEntryException /*more exceptions */ {
         if (contentSpecification.contains("("))
             return parseFunction(contentSpecification);
         // It is a reference
-        String[] address = contentSpecificationaddress.split(";");
-        return new Referência at Integer.parseInt(address[0].trim()), Integer.parseInt(address[1]);
+        String[] address = contentSpecification.split(";");
+        return new Reference(_spreadsheet.getCell(Integer.parseInt(address[0].trim()), Integer.parseInt(address[1])));
     }
 
-    private Content parseFunction(String functionSpecification) throws UnrecognizedEntryException /more exceptions */ {
+    private Content parseFunction(String functionSpecification) throws UnrecognizedEntryException /*more exceptions */ {
         String[] components = functionSpecification.split("[()]");
         if (components[1].contains(","))
             return parseBinaryFunction(components[0], components[1]);
@@ -108,35 +113,35 @@ class Parser {
     private Content parseBinaryFunction(String functionName, String args) throws UnrecognizedEntryException /* , more Exceptions */ {
         String[] arguments = args.split(",");
         Content arg0 = parseArgumentExpression(arguments[0]);
-        Content arg1 = parseArgumentExpression(argarguments[1]);
+        Content arg1 = parseArgumentExpression(arguments[1]);
 
         return switch (functionName) {
-            case "ADD" -> new Add function with (arg0, arg1);
-            case "SUB" -> new Sub function with (arg0, arg1);
-            case "MUL" -> new Mul function with (arg0, arg1);
-            case "DIV" -> new Div function with (arg0, arg1);
-            default -> dar erro com função inválida: functionName ;
+            case "ADD" -> new Add(arg0, arg1);
+            case "SUB" -> new Sub(arg0, arg1);
+            case "MUL" -> new Mul(arg0, arg1);
+            case "DIV" -> new Div(arg0, arg1);
+            default -> throw new UnrecognizedEntryException("Invalid Function Name " + functionName);//dar erro com função inválida: functionName;
         };
     }
 
     private Content parseArgumentExpression(String argExpression) throws UnrecognizedEntryException {
         if (argExpression.contains(";")  && argExpression.charAt(0) != '\'') {
             String[] address = argExpression.split(";");
-            return new referência at Integer.parseInt(address[0].trim()), Integer.parseInt(address[1]);
+            return new Reference(_spreadsheet.getCell(Integer.parseInt(address[0].trim()), Integer.parseInt(address[1])));
             // pode ser diferente do anterior em parseContentExpression
         } else
             return parseLiteral(argExpression);
     }
 
-    private Content parseIntervalFunction(String functionName, String rangeDescription)
+    private Content parseIntervalFunction(String functionName, String gammaDescription)
             throws UnrecognizedEntryException /* , more exceptions ? */ {
-        Range range = _spredsheet.buildRange(rangeDescription);
+        Gamma gamma = _spreadsheet.buildGamma(gammaDescription);
         return switch (functionName) {
-            case "CONCAT" -> new Concat com range
-            case "COASLECE" -> new Coaslece com range;
-            case "PRODUCT" -> new Product com range;
-            case "AVERAGE" -> new Average com range;
-            default -> dar erro com função inválida: functionName;
+            case "CONCAT" -> new Concat(gamma);
+            case "COALESCE" -> new Coalesce(gamma);
+            case "PRODUCT" -> new Product(gamma);
+            case "AVERAGE" -> new Average(gamma) ;
+            default -> throw new UnrecognizedEntryException("Invalid Function Name " + functionName);//dar erro com função inválida: functionName;
         };
     }
 
