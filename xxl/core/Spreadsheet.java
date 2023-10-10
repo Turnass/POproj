@@ -63,7 +63,8 @@ public class Spreadsheet implements Serializable {
   public void insertContent(int row, int column, Content contentSpecification) throws UnrecognizedEntryException /* FIXME maybe add exceptions */ {
     //FIXME implement method
   }
-  public void insertGammaContent(Gamma gamma, Content content){
+  public void insertGammaContent(String range, Content content){
+      Gamma gamma = createGamma(range)
       gamma.insertContent(content);
   }
   public void deleteGamaContent(Gamma gamma){
@@ -73,8 +74,25 @@ public class Spreadsheet implements Serializable {
   public void searchValue(String Value){}
 
   public void searchFunction(String operationName){}
-
-    public void addUser(User user) {
+  public void addUser(User user) {
         _users.add(user);
     }
+
+ public Gamma createGamma(String range) throws ?{
+        String[] gammaCoordinates;
+        int firstRow, firstColumn, lastRow, lastColumn;
+
+        if (range.indexOf(':') != -1){
+            gammaCoordinates = range.split("[:;]");
+            firstRow = Integer.parseInt(gammaCoordinates[0]);
+            firstColumn = Integer.parseInt(gammaCoordinates[1]);
+            lastRow = Integer.parseInt(gammaCoordinates[2]);
+            lastColumn = Integer.parseInt(gammaCoordinates[3]);
+        } else {
+            gammaCoordinates = range.split(";");
+            firstRow = lastRow = Integer.parseInt(rangeCoordinates[0]);
+            firstColumn = lastColumn = Integer.parseInt(rangeCoordinates[1]);
+        }
+        return new Gamma(firstRow, firstColumn, lastRow, lastColumn, this);
+  }
 }

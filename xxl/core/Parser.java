@@ -76,7 +76,7 @@ class Parser {
                 return parseLiteral(contentSpecification);
             }
         } catch (UnrecognizedEntryException e) {
-            throw new RuntimeException(e);
+            throw new UnrecognizedEntryException(e);
         }
     }
 
@@ -88,7 +88,7 @@ class Parser {
                 int val = Integer.parseInt(literalExpression);
                 return new Number(val);
             } catch (NumberFormatException nfe) {
-                throw new UnrecognizedEntryException("Número inválido: " + literalExpression);
+                throw new UnrecognizedEntryException("Invalid number: " + literalExpression);
             }
         }
     }
@@ -135,7 +135,7 @@ class Parser {
 
     private Content parseIntervalFunction(String functionName, String gammaDescription)
             throws UnrecognizedEntryException /* , more exceptions ? */ {
-        Gamma gamma = _spreadsheet.buildGamma(gammaDescription);
+        Gamma gamma = _spreadsheet.createGamma(gammaDescription);
         return switch (functionName) {
             case "CONCAT" -> new Concat(gamma);
             case "COALESCE" -> new Coalesce(gamma);

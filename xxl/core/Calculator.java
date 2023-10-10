@@ -75,7 +75,7 @@ public class Calculator implements Serializable {
         // FIXME implement serialization method
         try(FileOutputStream fileOut = new FileOutputStream(filename)) {
             try (ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-                out.writeObject(_spreadsheet);
+                out.writeObject(_users);
                 setFilename(filename);
             }
         }

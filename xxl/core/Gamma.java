@@ -1,21 +1,28 @@
 package xxl.core;
 
 public class Gamma {
-    private Cell _firstCell;
-    private Cell _lastCell;
-
-    public Gamma(){
-
+    private Spreadsheet _spreadsheet;
+    private int _firstRow;
+    private int _lastRow;
+    private int _firstColumn;
+    private int _lastColumn;
+    public Gamma(int firstRow, int lastRow, int firstColumn, int lastColumn, Spreadsheet sheet){
+        _firstRow = firstRow;
+        _lastRow = lastRow;
+        _firstColumn = firstColumn;
+        _lastColumn = lastColumn;
     }
     public void printGamma(){}
 
     public void insertContent(Content content){
-        /*for (Cell cell: _cells){
-            cell.setContent(content);
-        }*/
+        for (int i = _firstRow; i <= _lastRow; i++){
+            for (int j = _firstColumn; j<= _lastColumn; j++){
+                _spreadsheet[i][j].setContent(content);
+            }
+        }
     }
 
-    public void getContent(){}
+    //public void getContent(){}
 
     public void deleteContent(){}
 
