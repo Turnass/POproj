@@ -8,6 +8,7 @@ public class User {
     private ArrayList<Spreadsheet> _spreadsheets;
 
     public User(String name){
+        _spreadsheets = new ArrayList<>();
         _name = name;
     }
     public void addSpreadsheet(Spreadsheet spreadsheet) {

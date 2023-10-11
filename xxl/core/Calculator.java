@@ -19,7 +19,6 @@ public class Calculator implements Serializable {
     private Spreadsheet _spreadsheet = null;
     private User _activeUser = new User("root");
     private Repository _repo = new Repository(_activeUser);
-    private ArrayList<User> _users = new ArrayList<>();
 
     private String _filename;
     // FIXME add more fields if needed
@@ -29,13 +28,15 @@ public class Calculator implements Serializable {
     public void newUser(String name){
         _activeUser = new User(name);
         _repo.addUser(_activeUser);
-        _users.add(_activeUser);
         _spreadsheet = null;
     }
-    public void newSpreadsheet(int numLines, int numColumns){
+    public boolean createSpreadsheet(int numLines, int numColumns){
+        if (numLines <= 0 || numColumns <= 0)
+            return false;
         _spreadsheet = new Spreadsheet(numLines,numColumns,_activeUser);
         _activeUser.addSpreadsheet(_spreadsheet);
         _repo.addSpreadsheet(_spreadsheet);
+        return true;
     }
 
     /**
@@ -75,7 +76,7 @@ public class Calculator implements Serializable {
         // FIXME implement serialization method
         try(FileOutputStream fileOut = new FileOutputStream(filename)) {
             try (ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-                out.writeObject(_users);
+                out.writeObject(_repo);
                 setFilename(filename);
             }
         }
@@ -99,7 +100,7 @@ public class Calculator implements Serializable {
 
             try(FileInputStream fileIn = new FileInputStream(_filename)) {
                 try (ObjectInputStream in = new ObjectInputStream(fileIn)) {
-                    _users = (ArrayList<User>) in.readObject();
+                    _repo = (Repository) in.readObject();
                     setFilename(_filename);
 
                 } catch (IOException e) {

@@ -1,5 +1,12 @@
 package xxl.core;
-public class CutBuffer {
+
+import java.io.Serial;
+import java.io.Serializable;
+
+public class CutBuffer implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 202309102343L;
+
     private Gamma _clipboard;
 
     public void copy(Gamma gamma){
@@ -14,6 +21,6 @@ public class CutBuffer {
     }
 
     public void showClipboard(){
-        _clipboard.printGamma();
+        _clipboard.getGamma();
     }
 }

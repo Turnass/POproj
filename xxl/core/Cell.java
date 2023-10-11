@@ -1,7 +1,12 @@
 package xxl.core;
 
-public class Cell {
+import java.io.Serial;
+import java.io.Serializable;
 
+public class Cell implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 202309102342L;
     private int _line;
     private int _column;
     private Content _content;
@@ -20,10 +25,14 @@ public class Cell {
     }
 
     public String printCell(){
-        return _line + ";" + _column + "|" + getContent().printContent();
+        int line = _line + 1;
+        int column = _column + 1;
+        return line + ";" + column + "|" + _content.printContent();
     }
     @Override
     public String toString() {
-        return _line + ";" + _column + "|" + getContent().toString();
+        int line = _line + 1;
+        int column = _column + 1;
+        return line + ";" + column + "|" + getContent().toString();
     }
 }

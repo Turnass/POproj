@@ -66,7 +66,7 @@ class Parser {
     }
 
     // parse the beginning of an expression
-    Content parseContent(String contentSpecification) {
+    Content parseContent(String contentSpecification) throws UnrecognizedEntryException {
         char c = contentSpecification.charAt(0);
 
         try {
@@ -76,7 +76,7 @@ class Parser {
                 return parseLiteral(contentSpecification);
             }
         } catch (UnrecognizedEntryException e) {
-            throw new UnrecognizedEntryException(e);
+            throw e;
         }
     }
 

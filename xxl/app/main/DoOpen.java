@@ -26,7 +26,6 @@ class DoOpen extends Command<Calculator> {
   protected final void execute() throws CommandException {
 
       try {
-      //FIXME implement command
          _receiver.load(stringField("filename"));
       } catch (UnavailableFileException | FileNotFoundException | ClassNotFoundException | ImportFileException e) {
         throw new FileOpenFailedException(e);

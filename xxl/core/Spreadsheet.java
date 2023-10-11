@@ -28,18 +28,16 @@ public class Spreadsheet implements Serializable {
         _numLines = numLines;
         _numColumns = numColumns;
         _cells = new Cell[_numLines][_numColumns];
-    }
-    public Spreadsheet(int numLines, int numColumns, User user){
-        _numLines = numLines;
-        _numColumns = numColumns;
-        _cells = new Cell[_numLines][_numColumns];
-        addUser(user);
-
         for (int i = 0; i < _numLines; i++){
             for (int j = 0; j < _numColumns;j++){
-                _cells[i][j] = null;
+                _cells[i][j] = new Cell(i,j);
+                _cells[i][j].setContent(new NullContent());
             }
         }
+    }
+    public Spreadsheet(int numLines, int numColumns, User user){
+        this(numLines, numColumns);
+        addUser(user);
     }
 
 
@@ -48,9 +46,7 @@ public class Spreadsheet implements Serializable {
     public Cell getCell(int line, int column){
         return _cells[line][column];
     }
-    public Gamma buildGamma(String gammaDescription){
-        return new Gamma();
-    }
+    //public Gamma buildGamma(String gammaDescription){return new Gamma();}
     /**
    * Insert specified content in specified address.
    *
@@ -64,10 +60,11 @@ public class Spreadsheet implements Serializable {
     //FIXME implement method
   }
   public void insertGammaContent(String range, Content content){
-      Gamma gamma = createGamma(range)
+      Gamma gamma = createGamma(range);
       gamma.insertContent(content);
   }
-  public void deleteGamaContent(Gamma gamma){
+  public void deleteGamaContent(String range){
+      Gamma gamma = createGamma(range);
       gamma.deleteContent();
   }
 
@@ -78,7 +75,7 @@ public class Spreadsheet implements Serializable {
         _users.add(user);
     }
 
- public Gamma createGamma(String range) throws ?{
+ public Gamma createGamma(String range) /*throws ?*/{
         String[] gammaCoordinates;
         int firstRow, firstColumn, lastRow, lastColumn;
 
@@ -90,8 +87,8 @@ public class Spreadsheet implements Serializable {
             lastColumn = Integer.parseInt(gammaCoordinates[3]);
         } else {
             gammaCoordinates = range.split(";");
-            firstRow = lastRow = Integer.parseInt(rangeCoordinates[0]);
-            firstColumn = lastColumn = Integer.parseInt(rangeCoordinates[1]);
+            firstRow = lastRow = Integer.parseInt(gammaCoordinates[0]);
+            firstColumn = lastColumn = Integer.parseInt(gammaCoordinates[1]);
         }
         return new Gamma(firstRow, firstColumn, lastRow, lastColumn, this);
   }
