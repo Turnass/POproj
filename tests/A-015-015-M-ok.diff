@@ -1,0 +1,19 @@
+*** tests/A-015-015-M-ok.out	Fri Oct  6 12:23:45 2023
+--- tests/A-015-015-M-ok.outhyp	Wed Oct 11 13:42:05 2023
+***************
+*** 14,20 ****
+  6 - Colar
+  7 - Mostrar 'cut buffer'
+  0 - Sair
+! Escolha uma opção: Especifique a gama (startline;startcol:endline;endcol): 3;3|#VALUE=4;2
+  Menu de Edição
+  1 - Visualizar
+  2 - Inserir
+--- 14,20 ----
+  6 - Colar
+  7 - Mostrar 'cut buffer'
+  0 - Sair
+! Escolha uma opção: Especifique a gama (startline;startcol:endline;endcol): 3;3|
+  Menu de Edição
+  1 - Visualizar
+  2 - Inserir

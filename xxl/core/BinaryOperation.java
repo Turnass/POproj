@@ -32,5 +32,16 @@ public abstract class BinaryOperation extends Operation{
     }
 
 
+    @Override
+    public String printContent() {
+        return getValueAsInt() + toString();
+    }
 
+    @Override
+    public String toString() {
+        return "=" + getOperationName() + "(" + getArg(1).toString() + "," + getArg(2).toString() + ")";// Fixme print args
+    }
 }
+
+
+

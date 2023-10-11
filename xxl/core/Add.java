@@ -14,13 +14,4 @@ public class Add extends BinaryOperation{
         return getArg(1).getValueAsInt() + getArg(2).getValueAsInt();
     }
 
-    @Override
-    public String printContent() {
-        return getValueAsInt() + toString();
-    }
-
-    @Override
-    public String toString() {
-        return "=" + getOperationName() + "(" + getArg(1).toString() + "," + getArg(2).toString() + ")";// Fixme print args
-    }
 }

@@ -122,7 +122,7 @@ public class Calculator implements Serializable {
             // FIXME open import file and feed entries to new spreadsheet (in a cycle)
             //       each entry is inserted with:
             Parser parser = new Parser(_spreadsheet);
-            parser.parseFile(_filename);
+            _spreadsheet = parser.parseFile(_filename);
             _spreadsheet.addUser(_activeUser);
 
 

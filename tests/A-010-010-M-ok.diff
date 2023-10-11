@@ -1,0 +1,65 @@
+*** tests/A-010-010-M-ok.out	Fri Oct  6 12:23:45 2023
+--- tests/A-010-010-M-ok.outhyp	Wed Oct 11 13:42:05 2023
+***************
+*** 5,48 ****
+  Escolha uma opção: Ficheiro a abrir: Menu Principal
+  1 - Novo
+  2 - Abrir
+- 3 - Guardar
+- 4 - Menu de Edição
+- 5 - Menu de Consultas
+  0 - Sair
+! Escolha uma opção: Menu de Edição
+! 1 - Visualizar
+! 2 - Inserir
+! 3 - Copiar
+! 4 - Apagar
+! 5 - Cortar
+! 6 - Colar
+! 7 - Mostrar 'cut buffer'
+  0 - Sair
+! Escolha uma opção: Especifique a gama (startline;startcol:endline;endcol): 3;2|5
+! Menu de Edição
+! 1 - Visualizar
+! 2 - Inserir
+! 3 - Copiar
+! 4 - Apagar
+! 5 - Cortar
+! 6 - Colar
+! 7 - Mostrar 'cut buffer'
+! 0 - Sair
+! Escolha uma opção: Especifique a gama (startline;startcol:endline;endcol): 3;1|10
+! Menu de Edição
+! 1 - Visualizar
+! 2 - Inserir
+! 3 - Copiar
+! 4 - Apagar
+! 5 - Cortar
+! 6 - Colar
+! 7 - Mostrar 'cut buffer'
+! 0 - Sair
+! Escolha uma opção: Menu Principal
+  1 - Novo
+  2 - Abrir
+- 3 - Guardar
+- 4 - Menu de Edição
+- 5 - Menu de Consultas
+  0 - Sair
+  Escolha uma opção: 
+\ No newline at end of file
+--- 5,18 ----
+  Escolha uma opção: Ficheiro a abrir: Menu Principal
+  1 - Novo
+  2 - Abrir
+  0 - Sair
+! Escolha uma opção: Opção inválida!
+! Menu Principal
+! 1 - Novo
+! 2 - Abrir
+  0 - Sair
+! Escolha uma opção: Especifique o número de linhas da folha: Especifique o número de linhas da folha: Especifique o número de colunas da folha: Especifique o número de colunas da folha: Menu Principal
+  1 - Novo
+  2 - Abrir
+  0 - Sair
+  Escolha uma opção: 
+\ No newline at end of file
