@@ -1,5 +1,7 @@
 package xxl.core;
 
+import xxl.core.exception.UnrecognizedEntryException;
+
 import java.util.ArrayList;
 
 public class Gamma {
@@ -15,11 +17,15 @@ public class Gamma {
         _lastColumn = lastColumn - 1;
         _spreadsheet = sheet;
     }
-    public ArrayList<String> getGamma(){
+    public ArrayList<String> printGamma() throws UnrecognizedEntryException {
         ArrayList<String> _gamma = new ArrayList<>();
         for (int i = _firstRow; i <= _lastRow; i++){
             for (int j = _firstColumn; j <= _lastColumn; j++){
-                _gamma.add(_spreadsheet.getCell(i,j).printCell());
+                try {
+                    _gamma.add(_spreadsheet.getCell(i,j).printCell());
+                }catch (UnrecognizedEntryException e){
+                    throw e;
+                }
             }
         }
         return _gamma;

@@ -1,5 +1,7 @@
 package xxl.core;
 
+import xxl.core.exception.UnrecognizedEntryException;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -20,7 +22,11 @@ public class CutBuffer implements Serializable {
 
     }
 
-    public void showClipboard(){
-        _clipboard.getGamma();
+    public void showClipboard() throws UnrecognizedEntryException {
+        try {
+            _clipboard.printGamma();
+        }catch (UnrecognizedEntryException e){
+            throw e;
+        }
     }
 }

@@ -12,6 +12,7 @@ class DoNew extends Command<Calculator> {
 
   DoNew(Calculator receiver) {
     super(Label.NEW, receiver);
+    addBooleanField("guardar", Message.saveBeforeExit());
     addIntegerField("lines", Message.lines());
     addIntegerField("columns", Message.columns());
   }
@@ -19,6 +20,10 @@ class DoNew extends Command<Calculator> {
   @Override
   protected final void execute() throws CommandException {
     // FIXME implement command
+    boolean res = booleanField("guardar");
+    if (res){
+      _receiver.saveRepo();
+    }
     Integer lines = integerField("lines");
     Integer columns = integerField("columns");
 

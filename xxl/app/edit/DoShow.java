@@ -2,7 +2,11 @@ package xxl.app.edit;
 
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
+import xxl.app.exception.InvalidCellRangeException;
+import xxl.app.exception.UnknownFunctionException;
 import xxl.core.Spreadsheet;
+import xxl.core.exception.InvalidGammaException;
+import xxl.core.exception.UnrecognizedEntryException;
 // FIXME import classes
 
 /**
@@ -19,7 +23,13 @@ class DoShow extends Command<Spreadsheet> {
   @Override
   protected final void execute() throws CommandException {
     // FIXME implement command
-   _display.addAll(_receiver.createGamma(stringField("gamma")).getGamma());
-   _display.display();
+      try {
+          _display.addAll(_receiver.createGamma(stringField("gamma")).printGamma());
+          _display.display();
+      }catch (InvalidGammaException ex){
+          throw new InvalidCellRangeException(stringField("gamma"));
+      } catch (UnrecognizedEntryException e) {
+
+      }
   }
 }

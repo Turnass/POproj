@@ -1,5 +1,7 @@
 package xxl.core;
 
+import xxl.core.exception.UnrecognizedEntryException;
+
 public class Add extends BinaryOperation{
 
 
@@ -10,8 +12,12 @@ public class Add extends BinaryOperation{
     }
 
     @Override
-    public int getValueAsInt() {
-        return getArg(1).getValueAsInt() + getArg(2).getValueAsInt();
+    public int getValueAsInt() throws UnrecognizedEntryException {
+        try {
+            return getArg(1).getValueAsInt() + getArg(2).getValueAsInt();
+        }catch (UnrecognizedEntryException e){
+            throw e;
+        }
     }
 
 }

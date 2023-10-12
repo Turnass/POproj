@@ -3,10 +3,7 @@ package xxl.core;
 import java.io.*;
 import java.util.ArrayList;
 
-import xxl.core.exception.ImportFileException;
-import xxl.core.exception.MissingFileAssociationException;
-import xxl.core.exception.UnavailableFileException;
-import xxl.core.exception.UnrecognizedEntryException;
+import xxl.core.exception.*;
 
 // FIXME import classes
 
@@ -27,15 +24,12 @@ public class Calculator implements Serializable {
 
     public void newUser(String name){
         _activeUser = new User(name);
-        _repo.addUser(_activeUser);
         _spreadsheet = null;
     }
     public boolean createSpreadsheet(int numLines, int numColumns){
         if (numLines <= 0 || numColumns <= 0)
             return false;
         _spreadsheet = new Spreadsheet(numLines,numColumns,_activeUser);
-        _activeUser.addSpreadsheet(_spreadsheet);
-        _repo.addSpreadsheet(_spreadsheet);
         return true;
     }
 
@@ -47,10 +41,13 @@ public class Calculator implements Serializable {
     public final Spreadsheet getSpreadsheet(){
         return _spreadsheet;
     }
-    public void setSpreadsheet(){
 
+    public void saveRepo(){
+        _repo.addUser(_activeUser);
+        _repo.addSpreadsheet(_spreadsheet);
+        _spreadsheet.addUser(_activeUser);
+        _activeUser.addSpreadsheet(_spreadsheet);
     }
-
     /**
      * Saves the serialized application's state into the file associated to the current network.
      *
@@ -76,19 +73,18 @@ public class Calculator implements Serializable {
         // FIXME implement serialization method
         try(FileOutputStream fileOut = new FileOutputStream(filename)) {
             try (ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+                _repo.setUser(_activeUser);
+                _repo.setSpreadsheet(_spreadsheet);
                 out.writeObject(_repo);
                 setFilename(filename);
             }
         }
     }
 
-    private void setFilename(String filename) {
-        _filename = filename;
-    }
+    private void setFilename(String filename) {_filename = filename;}
 
-    public String getFilename() {
-        return _filename;
-    }
+    public String getFilename() {return _filename;}
+
     /**
      * @param _filename name of the file containing the serialized application's state
      *        to load.
@@ -101,6 +97,8 @@ public class Calculator implements Serializable {
             try(FileInputStream fileIn = new FileInputStream(_filename)) {
                 try (ObjectInputStream in = new ObjectInputStream(fileIn)) {
                     _repo = (Repository) in.readObject();
+                    _activeUser = _repo.getUser();
+                    _spreadsheet = _repo.getSpreadsheet();
                     setFilename(_filename);
 
                 } catch (IOException e) {
@@ -126,7 +124,7 @@ public class Calculator implements Serializable {
             _spreadsheet.addUser(_activeUser);
 
 
-        } catch (IOException | UnrecognizedEntryException /* FIXME maybe other exceptions */ e) {
+        } catch (IOException | UnrecognizedEntryException | InvalidGammaException | UnknownFunctionException/* FIXME maybe other exceptions */ e) {
             throw new ImportFileException(_filename, e);
         }
     }

@@ -6,6 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import xxl.core.exception.InvalidGammaException;
 import xxl.core.exception.UnrecognizedEntryException;
 
 /**
@@ -40,6 +41,12 @@ public class Spreadsheet implements Serializable {
         addUser(user);
     }
 
+    public int getNumLines(){
+        return _numLines;
+    }
+    public int getNumColumns(){
+        return _numColumns;
+    }
 
     // FIXME define methods
 
@@ -61,13 +68,22 @@ public class Spreadsheet implements Serializable {
       getCell(row - 1, column - 1).setContent(contentSpecification);
 
   }
-  public void insertGammaContent(String range, Content content){
-      Gamma gamma = createGamma(range);
-      gamma.insertContent(content);
+  public void insertGammaContent(String range, Content content) throws InvalidGammaException {
+      try {
+          Gamma gamma = createGamma(range);
+          gamma.insertContent(content);
+      }catch (InvalidGammaException ex){
+          throw ex;
+      }
+
   }
-  public void deleteGamaContent(String range){
-      Gamma gamma = createGamma(range);
-      gamma.deleteContent();
+  public void deleteGamaContent(String range) throws InvalidGammaException {
+      try {
+          Gamma gamma = createGamma(range);
+          gamma.deleteContent();
+      }catch (InvalidGammaException ex){
+          throw ex;
+      }
   }
 
   public void searchValue(String Value){}
@@ -77,9 +93,10 @@ public class Spreadsheet implements Serializable {
         _users.add(user);
     }
 
- public Gamma createGamma(String range) /*throws ?*/{
+ public Gamma createGamma(String range) throws InvalidGammaException /*throws ?*/{
         String[] gammaCoordinates;
         int firstRow, firstColumn, lastRow, lastColumn;
+
 
         if (range.indexOf(':') != -1){
             gammaCoordinates = range.split("[:;]");
@@ -92,6 +109,8 @@ public class Spreadsheet implements Serializable {
             firstRow = lastRow = Integer.parseInt(gammaCoordinates[0]);
             firstColumn = lastColumn = Integer.parseInt(gammaCoordinates[1]);
         }
-        return new Gamma(firstRow, firstColumn, lastRow, lastColumn, this);
+        if (lastRow > _numLines || lastColumn > _numColumns)
+            throw new InvalidGammaException(range);
+        return new Gamma(firstRow, lastRow, firstColumn, lastColumn, this);
   }
 }

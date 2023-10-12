@@ -1,5 +1,7 @@
 package xxl.core;
 
+import xxl.core.exception.UnrecognizedEntryException;
+
 public class Mul extends BinaryOperation{
     public Mul(Content first, Content second){
         setOperationName(BinaryOperations.SUB);
@@ -8,8 +10,12 @@ public class Mul extends BinaryOperation{
     }
 
     @Override
-    public int getValueAsInt() {
-        return getArg(1).getValueAsInt() * getArg(2).getValueAsInt();
+    public int getValueAsInt() throws UnrecognizedEntryException {
+       try {
+            return getArg(1).getValueAsInt() * getArg(2).getValueAsInt();
+        }catch (UnrecognizedEntryException e){
+            throw e;
+        }
     }
 
 }

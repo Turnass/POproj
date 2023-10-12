@@ -16,6 +16,10 @@ public class NullContent extends Content{
     public String printContent() {
         return "";
     }
+    @Override
+    public boolean isNull(){
+        return true;
+    }
     public String toString(){
         return "";
     }

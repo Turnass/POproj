@@ -1,12 +1,14 @@
 package xxl.core;
 
+import xxl.core.exception.UnrecognizedEntryException;
+
 import java.io.Serial;
 import java.io.Serializable;
 
 public class Cell implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 202309102342L;
+    private static final long serialVersionUID = 202310102342L;
     private int _line;
     private int _column;
     private Content _content;
@@ -24,15 +26,17 @@ public class Cell implements Serializable {
         _content = content;
     }
 
-    public String printCell(){
-        int line = _line + 1;
-        int column = _column + 1;
-        return line + ";" + column + "|" + _content.printContent();
+    public String printCell() throws UnrecognizedEntryException {
+        try {
+            return toString() + "|" + _content.printContent();
+        }catch (UnrecognizedEntryException e){
+            throw e;
+        }
     }
     @Override
     public String toString() {
         int line = _line + 1;
         int column = _column + 1;
-        return line + ";" + column + "|" + getContent().toString();
+        return line + ";" + column;
     }
 }

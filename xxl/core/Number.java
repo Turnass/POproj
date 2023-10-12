@@ -1,5 +1,7 @@
 package xxl.core;
 
+import xxl.core.exception.UnrecognizedEntryException;
+
 public class Number extends Literal{
 
     private int _value;
@@ -10,9 +12,8 @@ public class Number extends Literal{
     public int getValueAsInt(){
         return _value;
     }
-    public String getValueAsString(){
-    //    throw new ...;
-        return "";
+    public String getValueAsString() throws UnrecognizedEntryException {
+        throw new UnrecognizedEntryException("Not a String");
     }
 
     public String toString(){

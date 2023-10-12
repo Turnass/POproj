@@ -1,5 +1,7 @@
 package xxl.core;
 
+import xxl.core.exception.UnrecognizedEntryException;
+
 public abstract class BinaryOperation extends Operation{
 
     private BinaryOperations _operationName;
@@ -33,8 +35,12 @@ public abstract class BinaryOperation extends Operation{
 
 
     @Override
-    public String printContent() {
-        return getValueAsInt() + toString();
+    public String printContent() throws UnrecognizedEntryException {
+        try {
+            return getValueAsInt() + toString();
+        }catch (UnrecognizedEntryException e){
+            throw e;
+        }
     }
 
     @Override

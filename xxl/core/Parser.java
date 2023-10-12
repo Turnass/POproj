@@ -4,7 +4,10 @@ package xxl.core;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.lang.reflect.InaccessibleObjectException;
 
+import xxl.core.exception.InvalidGammaException;
+import xxl.core.exception.UnknownFunctionException;
 import xxl.core.exception.UnrecognizedEntryException;
 
 class Parser {
@@ -18,7 +21,7 @@ class Parser {
         _spreadsheet = spreadsheet;
     }
 
-    Spreadsheet parseFile(String filename) throws IOException, UnrecognizedEntryException /* More Exceptions? */ {
+    Spreadsheet parseFile(String filename) throws IOException, UnrecognizedEntryException, InvalidGammaException, UnknownFunctionException /* More Exceptions? */ {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             parseDimensions(reader);
 
@@ -26,6 +29,8 @@ class Parser {
 
             while ((line = reader.readLine()) != null)
                 parseLine(line);
+        }catch (InvalidGammaException | UnknownFunctionException e){
+            throw e;
         }
 
         return _spreadsheet;
@@ -51,7 +56,7 @@ class Parser {
         _spreadsheet = new Spreadsheet(rows, columns);
     }
 
-    private void parseLine(String line) throws UnrecognizedEntryException /*, more exceptions? */{
+    private void parseLine(String line) throws UnrecognizedEntryException, InvalidGammaException, UnknownFunctionException /*, more exceptions? */{
         String[] components = line.split("\\|");
 
         if (components.length == 1) // do nothing
@@ -59,14 +64,20 @@ class Parser {
 
         if (components.length == 2) {
             String[] address = components[0].split(";");
-            Content content = parseContent(components[1]);
+            Content content = null;
+            try {
+
+                content = parseContent(components[1]);
+            }catch (InvalidGammaException | UnknownFunctionException e){
+                throw e;
+            }
             _spreadsheet.insertContent(Integer.parseInt(address[0]), Integer.parseInt(address[1]), content);
         } else
             throw new UnrecognizedEntryException("Wrong format in line: " + line);
     }
 
     // parse the beginning of an expression
-    Content parseContent(String contentSpecification) throws UnrecognizedEntryException {
+    Content parseContent(String contentSpecification) throws UnrecognizedEntryException, InvalidGammaException, UnknownFunctionException {
         char c = contentSpecification.charAt(0);
 
         try {
@@ -75,7 +86,7 @@ class Parser {
             }else{
                 return parseLiteral(contentSpecification);
             }
-        } catch (UnrecognizedEntryException e) {
+        } catch (UnrecognizedEntryException | InvalidGammaException | UnknownFunctionException e) {
             throw e;
         }
     }
@@ -94,23 +105,40 @@ class Parser {
     }
 
     // contentSpecification is what comes after '='
-    private Content parseContentExpression(String contentSpecification) throws UnrecognizedEntryException /*more exceptions */ {
+    private Content parseContentExpression(String contentSpecification) throws UnrecognizedEntryException, InvalidGammaException, UnknownFunctionException /*more exceptions */ {
         if (contentSpecification.contains("("))
-            return parseFunction(contentSpecification);
+            try {
+                return parseFunction(contentSpecification);
+            }catch (InvalidGammaException | UnknownFunctionException ex){
+                throw ex;
+            }
         // It is a reference
         String[] address = contentSpecification.split(";");
-        return new Reference(_spreadsheet.getCell(Integer.parseInt(address[0].trim()), Integer.parseInt(address[1])));
+        int line = Integer.parseInt(address[0].trim());
+        int column = Integer.parseInt(address[1]);
+        if (line > _spreadsheet.getNumLines() || column > _spreadsheet.getNumColumns() || _spreadsheet.getCell(line - 1, column - 1).getContent().isNull()){
+            Cell cell = new Cell(line - 1, column - 1);
+            cell.setContent(new Text("#VALUE"));
+            return new Reference(cell);
+        }
+        return new Reference(_spreadsheet.getCell(line, column));
     }
 
-    private Content parseFunction(String functionSpecification) throws UnrecognizedEntryException /*more exceptions */ {
+    private Content parseFunction(String functionSpecification) throws UnrecognizedEntryException, InvalidGammaException, UnknownFunctionException /*more exceptions */ {
         String[] components = functionSpecification.split("[()]");
-        if (components[1].contains(","))
-            return parseBinaryFunction(components[0], components[1]);
+        try {
+            if (components[1].contains(","))
+                return parseBinaryFunction(components[0], components[1]);
 
-        return parseIntervalFunction(components[0], components[1]);
+            return parseIntervalFunction(components[0], components[1]);
+
+        }catch (InvalidGammaException | UnknownFunctionException e){
+            throw e;
+        }
+
     }
 
-    private Content parseBinaryFunction(String functionName, String args) throws UnrecognizedEntryException /* , more Exceptions */ {
+    private Content parseBinaryFunction(String functionName, String args) throws UnrecognizedEntryException, UnknownFunctionException /* , more Exceptions */ {
         String[] arguments = args.split(",");
         Content arg0 = parseArgumentExpression(arguments[0]);
         Content arg1 = parseArgumentExpression(arguments[1]);
@@ -120,7 +148,7 @@ class Parser {
             case "SUB" -> new Sub(arg0, arg1);
             case "MUL" -> new Mul(arg0, arg1);
             case "DIV" -> new Div(arg0, arg1);
-            default -> throw new UnrecognizedEntryException("Invalid Function Name " + functionName);//dar erro com função inválida: functionName;
+            default -> throw new UnknownFunctionException(functionName);
         };
     }
 
@@ -134,14 +162,19 @@ class Parser {
     }
 
     private Content parseIntervalFunction(String functionName, String gammaDescription)
-            throws UnrecognizedEntryException /* , more exceptions ? */ {
-        Gamma gamma = _spreadsheet.createGamma(gammaDescription);
+            throws UnrecognizedEntryException, InvalidGammaException, UnknownFunctionException /* , more exceptions ? */ {
+        Gamma gamma = null;
+        try{
+            gamma = _spreadsheet.createGamma(gammaDescription);
+        }catch (InvalidGammaException ex){
+            throw ex;
+        }
         return switch (functionName) {
             case "CONCAT" -> new Concat(gamma);
             case "COALESCE" -> new Coalesce(gamma);
             case "PRODUCT" -> new Product(gamma);
             case "AVERAGE" -> new Average(gamma) ;
-            default -> throw new UnrecognizedEntryException("Invalid Function Name " + functionName);//dar erro com função inválida: functionName;
+            default -> throw new UnknownFunctionException(functionName);
         };
     }
 
