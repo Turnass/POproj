@@ -2,6 +2,7 @@ package xxl.core;
 
 public class NullContent extends Content{
 
+    public static final String VALUE = "#VALUE";
     @Override
     public String getValueAsString() {
         return null;

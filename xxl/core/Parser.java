@@ -116,12 +116,12 @@ class Parser {
         String[] address = contentSpecification.split(";");
         int line = Integer.parseInt(address[0].trim());
         int column = Integer.parseInt(address[1]);
-        if (line > _spreadsheet.getNumLines() || column > _spreadsheet.getNumColumns() || _spreadsheet.getCell(line - 1, column - 1).getContent().isNull()){
+        if (line > _spreadsheet.getNumLines() || column > _spreadsheet.getNumColumns()){
             Cell cell = new Cell(line - 1, column - 1);
-            cell.setContent(new Text("#VALUE"));
+            cell.setContent(new NullContent());
             return new Reference(cell);
         }
-        return new Reference(_spreadsheet.getCell(line, column));
+        return new Reference(_spreadsheet.getCell(line - 1, column - 1));
     }
 
     private Content parseFunction(String functionSpecification) throws UnrecognizedEntryException, InvalidGammaException, UnknownFunctionException /*more exceptions */ {
@@ -155,7 +155,14 @@ class Parser {
     private Content parseArgumentExpression(String argExpression) throws UnrecognizedEntryException {
         if (argExpression.contains(";")  && argExpression.charAt(0) != '\'') {
             String[] address = argExpression.split(";");
-            return new Reference(_spreadsheet.getCell(Integer.parseInt(address[0].trim()), Integer.parseInt(address[1])));
+            int line = Integer.parseInt(address[0].trim());
+            int column = Integer.parseInt(address[1]);
+            if (line > _spreadsheet.getNumLines() || column > _spreadsheet.getNumColumns()) {
+                Cell cell = new Cell(line - 1, column - 1);
+                cell.setContent(new NullContent());
+                return new Reference(cell);
+            }
+            return new Reference(_spreadsheet.getCell(line - 1, column - 1));
             // pode ser diferente do anterior em parseContentExpression
         } else
             return parseLiteral(argExpression);

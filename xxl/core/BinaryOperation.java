@@ -39,8 +39,9 @@ public abstract class BinaryOperation extends Operation{
         try {
             return getValueAsInt() + toString();
         }catch (UnrecognizedEntryException e){
-            throw e;
+            System.out.println("Chakras");
         }
+        return NullContent.VALUE;
     }
 
     @Override

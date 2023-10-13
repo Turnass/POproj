@@ -22,20 +22,22 @@ public class Reference extends Content{
 
     @Override
     public String toString() {
-        return "=" + _cell.toString();
+        return _cell.toString();
     }
 
     @Override
     public String printContent(){
-        try {
-            return getValueAsString() + toString();
-        }catch (UnrecognizedEntryException e){}
-
-        try {
-            return getValueAsInt() + toString();
-        }catch (UnrecognizedEntryException e){}
-
         String str = "#VALUE";
-        return str + toString();
+        if (_cell.getContent().isNull())
+            return str + "=" + toString();
+        try {
+            return getValueAsString() + "=" + toString();
+        }catch (UnrecognizedEntryException e){}
+
+        try {
+            return getValueAsInt() + "=" + toString();
+        }catch (UnrecognizedEntryException e){}
+
+        return str + "=" + toString();
     }
 }
