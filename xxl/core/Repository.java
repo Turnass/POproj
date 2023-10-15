@@ -20,9 +20,11 @@ public class Repository implements Serializable {
     }
     public void addUser(User user){
         _users.add(user);
+        setUser(user);
     }
     public void addSpreadsheet(Spreadsheet spreadsheet){
         _spreadsheets.add(spreadsheet);
+        setSpreadsheet(spreadsheet);
     }
     public void setSpreadsheet(Spreadsheet sheet){
         _sheet = sheet;

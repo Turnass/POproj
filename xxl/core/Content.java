@@ -1,5 +1,7 @@
 package xxl.core;
 
+import xxl.core.exception.InvalidDataTypeException;
+import xxl.core.exception.NullContentException;
 import xxl.core.exception.UnrecognizedEntryException;
 
 import java.io.Serial;
@@ -9,8 +11,8 @@ public abstract class Content implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 202309102341L;
-    public abstract String getValueAsString() throws UnrecognizedEntryException;
-    public abstract int getValueAsInt() throws UnrecognizedEntryException;
+    public abstract String getValueAsString() throws InvalidDataTypeException, NullContentException;
+    public abstract int getValueAsInt() throws InvalidDataTypeException, NullContentException;
 
     public abstract String printContent() throws UnrecognizedEntryException;
 

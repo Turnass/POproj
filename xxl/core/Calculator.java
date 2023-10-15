@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import xxl.core.exception.*;
 
-// FIXME import classes
 
 /**
  * Class representing a spreadsheet application.
@@ -16,20 +15,28 @@ public class Calculator implements Serializable {
     private Spreadsheet _spreadsheet = null;
     private User _activeUser = new User("root");
     private Repository _repo = new Repository(_activeUser);
-
     private String _filename;
-    // FIXME add more fields if needed
 
 
-
+    /**
+     *
+      * @param name name of user to create
+     */
     public void newUser(String name){
         _activeUser = new User(name);
         _spreadsheet = null;
     }
+
+    /**
+     *
+     * @param numLines
+     * @param numColumns
+     * @return if the operation was successful or not
+     */
     public boolean createSpreadsheet(int numLines, int numColumns){
         if (numLines <= 0 || numColumns <= 0)
             return false;
-        _spreadsheet = new Spreadsheet(numLines,numColumns,_activeUser);
+        _spreadsheet = new Spreadsheet(numLines,numColumns);
         return true;
     }
 
@@ -42,6 +49,9 @@ public class Calculator implements Serializable {
         return _spreadsheet;
     }
 
+    /**
+     * Saves the repository of this session
+     */
     public void saveRepo(){
         _repo.addUser(_activeUser);
         _repo.addSpreadsheet(_spreadsheet);
@@ -56,7 +66,6 @@ public class Calculator implements Serializable {
      * @throws IOException if there is some error while serializing the state of the network to disk.
      */
     public void save() throws FileNotFoundException, MissingFileAssociationException, IOException {
-        // FIXME implement serialization method
         saveAs(_filename);
     }
 
@@ -70,19 +79,25 @@ public class Calculator implements Serializable {
      * @throws IOException if there is some error while serializing the state of the network to disk.
      */
     public void saveAs(String filename) throws FileNotFoundException, MissingFileAssociationException, IOException {
-        // FIXME implement serialization method
+
         try(FileOutputStream fileOut = new FileOutputStream(filename)) {
             try (ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-                _repo.setUser(_activeUser);
-                _repo.setSpreadsheet(_spreadsheet);
+                saveRepo();
                 out.writeObject(_repo);
                 setFilename(filename);
             }
         }
     }
 
+    /**
+     * @param filename
+     */
     private void setFilename(String filename) {_filename = filename;}
 
+    /**
+     *
+     * @return filename name of the file containing the serialized application's state
+     */
     public String getFilename() {return _filename;}
 
     /**
@@ -92,7 +107,6 @@ public class Calculator implements Serializable {
      *         an error while processing this file.
      */
     public void load(String _filename) throws UnavailableFileException, FileNotFoundException, ClassNotFoundException, ImportFileException {
-        // FIXME implement serialization method
 
             try(FileInputStream fileIn = new FileInputStream(_filename)) {
                 try (ObjectInputStream in = new ObjectInputStream(fileIn)) {
@@ -117,12 +131,8 @@ public class Calculator implements Serializable {
      */
     public void importFile(String _filename) throws ImportFileException {
         try {
-            // FIXME open import file and feed entries to new spreadsheet (in a cycle)
-            //       each entry is inserted with:
             Parser parser = new Parser(_spreadsheet);
             _spreadsheet = parser.parseFile(_filename);
-            _spreadsheet.addUser(_activeUser);
-
 
         } catch (IOException | UnrecognizedEntryException | InvalidGammaException | UnknownFunctionException/* FIXME maybe other exceptions */ e) {
             throw new ImportFileException(_filename, e);

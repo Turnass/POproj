@@ -1,6 +1,5 @@
 package xxl.core;
 
-// FIXME import classes
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -23,8 +22,6 @@ public class Spreadsheet implements Serializable {
     private Cell[][] _cells = null;
     private CutBuffer _cutBuffer;
 
-    // FIXME define attributes
-    // FIXME define contructor(s)
     public Spreadsheet(int numLines, int numColumns){
         _numLines = numLines;
         _numColumns = numColumns;
@@ -48,12 +45,17 @@ public class Spreadsheet implements Serializable {
         return _numColumns;
     }
 
-    // FIXME define methods
 
+    /**
+     *
+     * @param line
+     * @param column
+     * @return Cell
+     */
     public Cell getCell(int line, int column){
         return _cells[line][column];
     }
-    //public Gamma buildGamma(String gammaDescription){return new Gamma();}
+
     /**
    * Insert specified content in specified address.
    *
@@ -64,10 +66,15 @@ public class Spreadsheet implements Serializable {
    */
 
   public void insertContent(int row, int column, Content contentSpecification) throws UnrecognizedEntryException /* FIXME maybe add exceptions */ {
-      //FIXME implement method
       getCell(row - 1, column - 1).setContent(contentSpecification);
-
   }
+
+    /**
+     *
+     * @param range
+     * @param content
+     * @throws InvalidGammaException
+     */
   public void insertGammaContent(String range, Content content) throws InvalidGammaException {
       try {
           Gamma gamma = createGamma(range);
@@ -77,6 +84,12 @@ public class Spreadsheet implements Serializable {
       }
 
   }
+
+    /**
+     *
+     * @param range
+     * @throws InvalidGammaException
+     */
   public void deleteGamaContent(String range) throws InvalidGammaException {
       try {
           Gamma gamma = createGamma(range);
@@ -93,7 +106,14 @@ public class Spreadsheet implements Serializable {
         _users.add(user);
     }
 
- public Gamma createGamma(String range) throws InvalidGammaException /*throws ?*/{
+
+    /**
+     * creates agamma by parsing the string range
+     * @param range
+     * @return
+     * @throws InvalidGammaException
+     */
+  public Gamma createGamma(String range) throws InvalidGammaException /*throws ?*/{
         String[] gammaCoordinates;
         int firstRow, firstColumn, lastRow, lastColumn;
 
@@ -109,8 +129,16 @@ public class Spreadsheet implements Serializable {
             firstRow = lastRow = Integer.parseInt(gammaCoordinates[0]);
             firstColumn = lastColumn = Integer.parseInt(gammaCoordinates[1]);
         }
-        if (lastRow > _numLines || lastColumn > _numColumns)
+        if (firstRow < 1 || firstColumn < 1 || lastRow > _numLines || lastColumn > _numColumns || notLinear(firstRow, lastRow, firstColumn, lastColumn))
             throw new InvalidGammaException(range);
         return new Gamma(firstRow, lastRow, firstColumn, lastColumn, this);
+  }
+
+  private boolean notLinear(int firstLine, int lastLine, int firstColumn, int lastColumn){
+        if (firstLine != lastLine && firstColumn != lastColumn)
+            return true;
+        else
+            return false;
+
   }
 }

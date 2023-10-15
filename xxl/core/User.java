@@ -19,4 +19,5 @@ public class User implements Serializable{
     public void addSpreadsheet(Spreadsheet spreadsheet) {
         _spreadsheets.add(spreadsheet);
     }
+
 }

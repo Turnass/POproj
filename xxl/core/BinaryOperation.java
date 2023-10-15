@@ -1,5 +1,7 @@
 package xxl.core;
 
+import xxl.core.exception.InvalidDataTypeException;
+import xxl.core.exception.NullContentException;
 import xxl.core.exception.UnrecognizedEntryException;
 
 public abstract class BinaryOperation extends Operation{
@@ -35,13 +37,12 @@ public abstract class BinaryOperation extends Operation{
 
 
     @Override
-    public String printContent() throws UnrecognizedEntryException {
+    public String printContent(){
         try {
             return getValueAsInt() + toString();
-        }catch (UnrecognizedEntryException e){
-            System.out.println("Chakras");
+        }catch (NullContentException | InvalidDataTypeException e){
+            return NullContent.VALUE + toString();
         }
-        return NullContent.VALUE;
     }
 
     @Override

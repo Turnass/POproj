@@ -1,5 +1,6 @@
 package xxl.core;
 
+import xxl.core.exception.InvalidDataTypeException;
 import xxl.core.exception.UnrecognizedEntryException;
 
 public class Number extends Literal{
@@ -9,11 +10,20 @@ public class Number extends Literal{
         _value = number;
     }
 
+    /**
+     *
+     * @return Literal value - int
+     */
     public int getValueAsInt(){
         return _value;
     }
-    public String getValueAsString() throws UnrecognizedEntryException {
-        throw new UnrecognizedEntryException("Not a String");
+
+    /**
+     *
+     * @throws InvalidDataTypeException
+     */
+    public String getValueAsString() throws InvalidDataTypeException {
+        throw new InvalidDataTypeException("Not a String");
     }
 
     public String toString(){

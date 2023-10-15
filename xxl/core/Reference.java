@@ -1,5 +1,7 @@
 package xxl.core;
 
+import xxl.core.exception.InvalidDataTypeException;
+import xxl.core.exception.NullContentException;
 import xxl.core.exception.UnrecognizedEntryException;
 
 public class Reference extends Content{
@@ -10,12 +12,12 @@ public class Reference extends Content{
         _cell = cell;
     }
     @Override
-    public String getValueAsString() throws UnrecognizedEntryException {
+    public String getValueAsString() throws InvalidDataTypeException, NullContentException {
         return _cell.getContent().getValueAsString();
     }
 
     @Override
-    public int getValueAsInt() throws UnrecognizedEntryException {
+    public int getValueAsInt() throws InvalidDataTypeException, NullContentException {
         return _cell.getContent().getValueAsInt();
     }
 
@@ -27,16 +29,16 @@ public class Reference extends Content{
 
     @Override
     public String printContent(){
-        String str = "#VALUE";
+        String str = NullContent.VALUE;
         if (_cell.getContent().isNull())
             return str + "=" + toString();
         try {
             return getValueAsString() + "=" + toString();
-        }catch (UnrecognizedEntryException e){}
+        }catch (InvalidDataTypeException | NullContentException e){}
 
         try {
             return getValueAsInt() + "=" + toString();
-        }catch (UnrecognizedEntryException e){}
+        }catch (InvalidDataTypeException | NullContentException e){}
 
         return str + "=" + toString();
     }
