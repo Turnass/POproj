@@ -10,9 +10,9 @@ public class FunctionComparator implements Comparator<String> {
         // Compares the functions names
         if (!info1[3].equals(info2[3])){
             return info1[3].compareTo(info2[3]);
-        } else if (Integer.parseInt(info1[1]) != Integer.parseInt(info2[1])) {
-            return Integer.parseInt(info1[1]) - Integer.parseInt(info2[1]);
+        } else if (Integer.parseInt(info1[0]) != Integer.parseInt(info2[0])) {
+            return Integer.parseInt(info1[0]) - Integer.parseInt(info2[0]);
         } else
-            return Integer.parseInt(info1[2]) - Integer.parseInt(info2[2]);
+            return Integer.parseInt(info1[1]) - Integer.parseInt(info2[1]);
     }
 }
