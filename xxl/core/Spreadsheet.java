@@ -4,6 +4,8 @@ package xxl.core;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import xxl.core.exception.*;
 
@@ -162,14 +164,27 @@ public class Spreadsheet implements Serializable {
       return res;
   }
 
-  public void searchFunction(String operationName){}
+  public ArrayList<String> searchFunction(String operationName){
+      ArrayList<String> res = new ArrayList<>();
+      for (int i = 0; i < _numLines; i++) {
+          for (int j = 0; j < _numColumns; j++) {
+              Cell cell = _cells[i][j];
+              if (!cell.getContent().isString() && cell.getContent().toString().contains(operationName)){
+                  res.add(cell.printCell());
+              }
+          }
+      }
+
+      Collections.sort(res, new FunctionComparator());
+      return res;
+  }
   public void addUser(User user) {
-        _users.add(user);
+      _users.add(user);
   }
 
 
     /**
-     * creates agamma by parsing the string range
+     * creates a gamma by parsing the string range
      * @param range
      * @return
      * @throws InvalidGammaException
