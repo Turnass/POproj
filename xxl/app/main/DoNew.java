@@ -21,8 +21,6 @@ class DoNew extends Command<Calculator> {
     if (Form.confirm(Message.saveBeforeExit())){
       _receiver.saveRepo();
     }
-    /*Integer lines = integerField("lines");
-    Integer columns = integerField("columns");*/
 
     _receiver.createSpreadsheet(integerField("lines"), integerField("columns"));
   }

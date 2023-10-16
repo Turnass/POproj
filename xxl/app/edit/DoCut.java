@@ -2,7 +2,9 @@ package xxl.app.edit;
 
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
+import xxl.app.exception.InvalidCellRangeException;
 import xxl.core.Spreadsheet;
+import xxl.core.exception.InvalidGammaException;
 // FIXME import classes
 
 /**
@@ -12,11 +14,15 @@ class DoCut extends Command<Spreadsheet> {
 
   DoCut(Spreadsheet receiver) {
     super(Label.CUT, receiver);
-    // FIXME add fields
+    addStringField("gamma", Message.address());
   }
   
   @Override
   protected final void execute() throws CommandException {
-    // FIXME implement command
+    try {
+      _receiver.cut(stringField("gamma"));
+    } catch (InvalidGammaException e) {
+      throw new InvalidCellRangeException(stringField("gamma"));
+    }
   }
 }

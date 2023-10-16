@@ -11,22 +11,10 @@ public class CutBuffer implements Serializable {
 
     private Gamma _clipboard;
 
-    public void copy(Gamma gamma){
+    public Gamma getClipboard(){
+        return _clipboard;
+    }
+    public void setClipboard(Gamma gamma){
         _clipboard = gamma;
-    }
-    public void paste(Gamma gamma){
-
-
-    }
-    public void cut(Gamma gamma){
-
-    }
-
-    public void showClipboard() throws UnrecognizedEntryException {
-        try {
-            _clipboard.printGamma();
-        }catch (UnrecognizedEntryException e){
-            throw e;
-        }
     }
 }

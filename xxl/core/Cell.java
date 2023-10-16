@@ -26,12 +26,8 @@ public class Cell implements Serializable {
         _content = content;
     }
 
-    public String printCell() throws UnrecognizedEntryException {
-        try {
-            return toString() + "|" + _content.printContent();
-        }catch (UnrecognizedEntryException e){
-            throw e;
-        }
+    public String printCell() {
+        return toString() + "|" + _content.printContent();
     }
     @Override
     public String toString() {

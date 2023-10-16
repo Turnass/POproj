@@ -14,7 +14,12 @@ public abstract class Content implements Serializable {
     public abstract String getValueAsString() throws InvalidDataTypeException, NullContentException;
     public abstract int getValueAsInt() throws InvalidDataTypeException, NullContentException;
 
-    public abstract String printContent() throws UnrecognizedEntryException;
+    public abstract String printContent();
+
+    public boolean isString(){
+        // Default result is false, override on Text
+        return false;
+    }
 
     public boolean isNull(){
         // Default result is false, override on NullContent

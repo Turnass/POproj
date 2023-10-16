@@ -31,8 +31,8 @@ public abstract class BinaryOperation extends Operation{
             _secondArg = content;
     }
     @Override
-    public String getValueAsString() {
-        return null;
+    public String getValueAsString() throws InvalidDataTypeException {
+        throw new InvalidDataTypeException("Not a String");
     }
 
 

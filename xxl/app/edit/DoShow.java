@@ -23,10 +23,8 @@ class DoShow extends Command<Spreadsheet> {
       try {
           _display.addAll(_receiver.createGamma(stringField("gamma")).printGamma());
           _display.display();
-      }catch (InvalidGammaException ex){
+      }catch (InvalidGammaException ex) {
           throw new InvalidCellRangeException(stringField("gamma"));
-      } catch (UnrecognizedEntryException e) {
-
       }
   }
 }

@@ -93,7 +93,7 @@ class Parser {
 
     private Literal parseLiteral(String literalExpression) throws UnrecognizedEntryException {
         if (literalExpression.charAt(0) == '\'')
-            return new Text(literalExpression);
+            return new Text(literalExpression.substring(1));
         else {
             try {
                 int val = Integer.parseInt(literalExpression);

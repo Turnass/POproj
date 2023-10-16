@@ -7,6 +7,7 @@ public abstract class GamaOperation extends Operation{
 
     enum GamaOperations{
         AVERAGE,
+        PRODUCT,
         CONCAT,
         COALESCE;
     }
@@ -25,4 +26,7 @@ public abstract class GamaOperation extends Operation{
     }
 
 
+    public String toString(){
+        return "=" + _operationName + "(" + _gamma.toString() + ")";
+    }
 }

@@ -5,8 +5,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import xxl.core.exception.InvalidGammaException;
-import xxl.core.exception.UnrecognizedEntryException;
+import xxl.core.exception.*;
 
 /**
  * Class representing a spreadsheet.
@@ -32,6 +31,7 @@ public class Spreadsheet implements Serializable {
                 _cells[i][j].setContent(new NullContent());
             }
         }
+        _cutBuffer = new CutBuffer();
     }
     public Spreadsheet(int numLines, int numColumns, User user){
         this(numLines, numColumns);
@@ -75,14 +75,15 @@ public class Spreadsheet implements Serializable {
      * @param content
      * @throws InvalidGammaException
      */
-  public void insertGammaContent(String range, Content content) throws InvalidGammaException {
+  public void insertGammaContent(String range, String content) throws InvalidGammaException, UnrecognizedEntryException, UnknownFunctionException {
       try {
+          Parser parser = new Parser();
+          Content parsedContent = parser.parseContent(content);
           Gamma gamma = createGamma(range);
-          gamma.insertContent(content);
-      }catch (InvalidGammaException ex){
+          gamma.insertContent(parsedContent);
+      }catch (InvalidGammaException | UnknownFunctionException | UnrecognizedEntryException ex){
           throw ex;
       }
-
   }
 
     /**
@@ -98,13 +99,73 @@ public class Spreadsheet implements Serializable {
           throw ex;
       }
   }
+    public void copy(String range) throws InvalidGammaException {
+      try {
+          Gamma gamma = createGamma(range).makeDeepCopy();
+          _cutBuffer.setClipboard(gamma);
+      }catch (InvalidGammaException e){
+          throw e;
+      }
+    }
+    public void paste(String range) throws InvalidGammaException {
+      try {
+          Gamma gamma = createGamma(range);
+          Gamma clipboard = _cutBuffer.getClipboard().makeDeepCopy();
+          gamma.insertGamma(clipboard);
+          //gamma.insertContent(_cutBuffer.getClipboard());
+      } catch (InvalidGammaException e) {
+          throw e;
+      }
 
-  public void searchValue(String Value){}
+
+    }
+    public void cut(String range) throws InvalidGammaException {
+      try {
+          Gamma gamma = createGamma(range);
+          Gamma gammaCopy = gamma.makeDeepCopy();
+          _cutBuffer.setClipboard(gammaCopy);
+          gamma.deleteContent();
+      } catch (InvalidGammaException e) {
+          throw e;
+      }
+    }
+
+    public ArrayList<String> showClipboard() throws UnrecognizedEntryException {
+        return _cutBuffer.getClipboard().printGamma();
+    }
+  public ArrayList<String> searchValue(String value){
+      ArrayList<String> res = new ArrayList<>();
+
+      if (value.charAt(0) == '\'') {
+          for (int i = 0; i < _numLines; i++) {
+              for (int j = 0; j < _numColumns; j++) {
+                  try {
+                      Cell tmp = _cells[i][j];
+                      if (tmp.getContent().getValueAsString().equals(value.substring(1))){
+                          res.add(tmp.printCell());
+                      }
+                  }catch (InvalidDataTypeException | NullContentException e){}
+              }
+          }
+      }else{
+          for (int i = 0; i < _numLines; i++) {
+              for (int j = 0; j < _numColumns; j++) {
+                  try {
+                      Cell tmp = _cells[i][j];
+                      if (tmp.getContent().getValueAsInt() == Integer.parseInt(value)){
+                          res.add(tmp.printCell());
+                      }
+                  }catch (InvalidDataTypeException | NullContentException e){}
+              }
+          }
+      }
+      return res;
+  }
 
   public void searchFunction(String operationName){}
   public void addUser(User user) {
         _users.add(user);
-    }
+  }
 
 
     /**
