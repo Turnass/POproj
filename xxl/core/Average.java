@@ -6,9 +6,11 @@ import xxl.core.exception.NullContentException;
 public class Average extends GamaOperation{
 
 
+    private int _value;
     public Average(Gamma gamma){
         setOperationName(GamaOperations.AVERAGE);
         setArg(gamma);
+        addObservers();
     }
     @Override
     public String getValueAsString() throws InvalidDataTypeException {
@@ -17,6 +19,10 @@ public class Average extends GamaOperation{
 
     @Override
     public int getValueAsInt() throws InvalidDataTypeException, NullContentException {
+        if (!getHasChanged()) {
+            System.out.println("nao mudou");
+            return _value;
+        }
         int res = 0;
         int  numCell = 0;
         Gamma gamma = getArg();
@@ -32,7 +38,11 @@ public class Average extends GamaOperation{
                 }
             }
         }
-        return res / numCell;
+        System.out.println("mudou");
+        int finalRes = res / numCell;
+        _value = finalRes;
+        setHasChanged(false);
+        return finalRes;
 
     }
 

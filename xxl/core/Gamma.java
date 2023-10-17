@@ -110,6 +110,14 @@ public class Gamma {
         }
     }
 
+    public void addObserver(Observer obs){
+        for (int i = _firstRow; i <= _lastRow; i++){
+            for (int j = _firstColumn; j<= _lastColumn; j++){
+                _spreadsheet.getCell(i,j).add(obs);
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return  _spreadsheet.getCell(_firstRow, _firstColumn) + ":" + _spreadsheet.getCell(_lastRow, _lastColumn);

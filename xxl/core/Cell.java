@@ -4,6 +4,8 @@ import xxl.core.exception.UnrecognizedEntryException;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Cell implements Serializable {
 
@@ -12,10 +14,24 @@ public class Cell implements Serializable {
     private int _line;
     private int _column;
     private Content _content;
+    private Set<Observer> _observers = new HashSet<>();
 
     public Cell(int line, int column){
         _line = line;
         _column = column;
+    }
+    public boolean add(Observer obs) {
+        return _observers.add(obs);
+    }
+
+    public boolean remove(Observer obs) {
+        return _observers.remove(obs);
+    }
+
+    // may be public or private
+    private void notifyObservers() {
+        for (Observer obs : _observers)
+            obs.update();
     }
 
     public Content getContent(){
@@ -24,6 +40,7 @@ public class Cell implements Serializable {
 
     public void setContent(Content content){
         _content = content;
+        notifyObservers();
     }
 
     public String printCell() {

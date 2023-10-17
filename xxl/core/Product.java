@@ -6,9 +6,11 @@ import xxl.core.exception.NullContentException;
 public class Product extends GamaOperation{
 
 
+    private int _value;
     public Product(Gamma gamma){
         setOperationName(GamaOperations.PRODUCT);
         setArg(gamma);
+        addObservers();
     }
     @Override
     public String getValueAsString() throws InvalidDataTypeException {
@@ -17,6 +19,10 @@ public class Product extends GamaOperation{
 
     @Override
     public int getValueAsInt() throws InvalidDataTypeException, NullContentException {
+        if (!getHasChanged()) {
+            System.out.println("nao mudou");
+            return _value;
+        }
         int res = 1;
         Gamma gamma = getArg();
         Spreadsheet sheet = gamma.getSpreadsheet();
@@ -30,6 +36,9 @@ public class Product extends GamaOperation{
                 }
             }
         }
+        System.out.println("mudou");
+        _value = res;
+        setHasChanged(false);
         return res;
 
     }

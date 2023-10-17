@@ -6,22 +6,34 @@ import xxl.core.exception.NullContentException;
 public class Coalesce extends GamaOperation{
 
 
+    private String _value;
     public Coalesce(Gamma gamma){
         setOperationName(GamaOperations.COALESCE);
         setArg(gamma);
+        addObservers();
     }
     @Override
     public String getValueAsString() {
+        if (!getHasChanged()){
+            System.out.println("nao mudou");
+            return _value;
+        }
+        String res = "";
         Gamma gamma = getArg();
         Spreadsheet sheet = gamma.getSpreadsheet();
         for (int i = gamma.getPos(Position.FIRSTROW); i <= gamma.getPos(Position.LASTROW); i++){
-            for (int j = gamma.getPos(Position.FIRSTCOLUMN); j<= gamma.getPos(Position.LASTCOLUMN); j++){
-                Content content = sheet.getCell(i,j).getContent();
-                if (content.isString())
-                    return content.toString();
+            for (int j = gamma.getPos(Position.FIRSTCOLUMN); j<= gamma.getPos(Position.LASTCOLUMN); j++) {
+                Content content = sheet.getCell(i, j).getContent();
+                if (content.isString()){
+                    res = content.toString();
+                    break;
+                }
             }
         }
-        return "";
+        System.out.println("mudou");
+        _value = res;
+        setHasChanged(false);
+        return res;
     }
 
     @Override
