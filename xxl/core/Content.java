@@ -21,6 +21,10 @@ public abstract class Content implements Serializable {
         return false;
     }
 
+    public boolean isFunction(){
+        // Default result is false, override on Operation
+        return false;
+    }
     public boolean isNull(){
         // Default result is false, override on NullContent
         return false;

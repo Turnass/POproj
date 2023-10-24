@@ -22,6 +22,7 @@ public class Spreadsheet implements Serializable {
     private ArrayList<User> _users = new ArrayList<>();
     private Cell[][] _cells = null;
     private CutBuffer _cutBuffer;
+    private boolean _saved = true;
 
     public Spreadsheet(int numLines, int numColumns){
         _numLines = numLines;
@@ -58,6 +59,12 @@ public class Spreadsheet implements Serializable {
         return _cells[line][column];
     }
 
+    public boolean isSaved(){
+        return _saved;
+    }
+    public void setSaved(boolean bool){
+        _saved = bool;
+    }
     /**
    * Insert specified content in specified address.
    *
@@ -79,10 +86,11 @@ public class Spreadsheet implements Serializable {
      */
   public void insertGammaContent(String range, String content) throws InvalidGammaException, UnrecognizedEntryException, UnknownFunctionException {
       try {
-          Parser parser = new Parser();
+          Parser parser = new Parser(this);
           Content parsedContent = parser.parseContent(content);
           Gamma gamma = createGamma(range);
           gamma.insertContent(parsedContent);
+          setSaved(false);
       }catch (InvalidGammaException | UnknownFunctionException | UnrecognizedEntryException ex){
           throw ex;
       }
@@ -97,36 +105,39 @@ public class Spreadsheet implements Serializable {
       try {
           Gamma gamma = createGamma(range);
           gamma.deleteContent();
+          setSaved(false);
       }catch (InvalidGammaException ex){
           throw ex;
       }
   }
     public void copy(String range) throws InvalidGammaException {
       try {
-          Gamma gamma = createGamma(range).makeDeepCopy();
+          Gamma gamma = createGamma(range).createClipboard();
           _cutBuffer.setClipboard(gamma);
       }catch (InvalidGammaException e){
           throw e;
       }
     }
     public void paste(String range) throws InvalidGammaException {
+      if (_cutBuffer.getClipboard() == null)
+          return;
       try {
           Gamma gamma = createGamma(range);
-          Gamma clipboard = _cutBuffer.getClipboard().makeDeepCopy();
+          Gamma clipboard = _cutBuffer.getClipboard();
           gamma.insertGamma(clipboard);
-          //gamma.insertContent(_cutBuffer.getClipboard());
+          setSaved(false);
       } catch (InvalidGammaException e) {
           throw e;
       }
-
-
     }
+
     public void cut(String range) throws InvalidGammaException {
       try {
           Gamma gamma = createGamma(range);
-          Gamma gammaCopy = gamma.makeDeepCopy();
+          Gamma gammaCopy = gamma.createClipboard();
           _cutBuffer.setClipboard(gammaCopy);
           gamma.deleteContent();
+          setSaved(false);
       } catch (InvalidGammaException e) {
           throw e;
       }
@@ -169,12 +180,11 @@ public class Spreadsheet implements Serializable {
       for (int i = 0; i < _numLines; i++) {
           for (int j = 0; j < _numColumns; j++) {
               Cell cell = _cells[i][j];
-              if (!cell.getContent().isString() && cell.getContent().toString().contains(operationName)){
+              if (cell.getContent().isFunction() && cell.getContent().toString().contains(operationName)){
                   res.add(cell.printCell());
               }
           }
       }
-
       Collections.sort(res, new FunctionComparator());
       return res;
   }

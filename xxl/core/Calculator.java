@@ -17,7 +17,6 @@ public class Calculator implements Serializable {
     private Repository _repo = new Repository(_activeUser);
     private String _filename;
 
-
     /**
      *
       * @param name name of user to create
@@ -83,11 +82,13 @@ public class Calculator implements Serializable {
         try(FileOutputStream fileOut = new FileOutputStream(filename)) {
             try (ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
                 saveRepo();
+                _spreadsheet.setSaved(true);
                 out.writeObject(_repo);
                 setFilename(filename);
             }
         }
     }
+
 
     /**
      * @param filename
@@ -133,6 +134,7 @@ public class Calculator implements Serializable {
         try {
             Parser parser = new Parser(_spreadsheet);
             _spreadsheet = parser.parseFile(_filename);
+            _spreadsheet.setSaved(false);
 
         } catch (IOException | UnrecognizedEntryException | InvalidGammaException | UnknownFunctionException/* FIXME maybe other exceptions */ e) {
             throw new ImportFileException(_filename, e);

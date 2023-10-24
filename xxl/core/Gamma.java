@@ -2,9 +2,14 @@ package xxl.core;
 
 import xxl.core.exception.UnrecognizedEntryException;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Gamma {
+public class Gamma implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 202310210001L;
     private Spreadsheet _spreadsheet;
     private int _firstRow;
     private int _lastRow;
@@ -47,6 +52,28 @@ public class Gamma {
             }
         }
     }
+
+    public Gamma createClipboard(){
+        int size = getSize();
+        int firstLine, lastLine, firstColumn, lastColumn;
+        firstLine = lastLine = firstColumn = lastColumn = 1;
+        Spreadsheet sheet;
+        if (isVertical()) {
+            lastLine = size;
+            sheet = new Spreadsheet(lastLine, lastColumn);
+            for (int i = 0; i < lastLine; i++){
+                sheet.getCell(i, firstColumn - 1).setContent(_spreadsheet.getCell(_firstRow + i, _firstColumn).getContent());
+            }
+        }else {
+            lastColumn = size;
+            sheet = new Spreadsheet(lastLine, lastColumn);
+            for (int i = 0; i < lastColumn; i++){
+                sheet.getCell(firstLine - 1, i).setContent(_spreadsheet.getCell(_firstRow, _firstColumn + i).getContent());
+            }
+        }
+        return new Gamma(firstLine, lastLine, firstColumn, lastColumn, sheet);
+    }
+
     public Gamma makeDeepCopy(){
         Spreadsheet sheet = new Spreadsheet(_lastRow + 1, _lastColumn + 1);
         for (int i = 0; i < sheet.getNumLines(); i++){
@@ -74,12 +101,27 @@ public class Gamma {
             }
         }
     }
+    public void insertContentsUntilEnd(Gamma gamma){
+        if (gamma.isVertical()){
+            for (int i = gamma._firstRow; i <= gamma._lastRow; i++){
+                if (i + _firstRow >= _spreadsheet.getNumLines())
+                    return;
+                _spreadsheet.getCell(_firstRow + i, _firstColumn).setContent(gamma._spreadsheet.getCell(i, gamma._firstColumn).getContent());
+            }
+        }else {
+            for (int i = gamma._firstColumn; i <= gamma._lastColumn; i++) {
+                if (i + _firstColumn >= _spreadsheet.getNumColumns())
+                    return;
+                _spreadsheet.getCell(_firstRow, _firstColumn + i).setContent(gamma._spreadsheet.getCell(gamma._firstRow, i).getContent());
+            }
+        }
+    }
 
     public void insertGamma(Gamma gamma){
        if (gamma == null) {
            return;
        }else if (_firstRow == _lastRow && _firstColumn == _lastColumn){
-
+           insertContentsUntilEnd(gamma);
        }else if (this.getSize() != gamma.getSize()){
            return;
        }else{
@@ -121,5 +163,11 @@ public class Gamma {
     @Override
     public String toString() {
         return  _spreadsheet.getCell(_firstRow, _firstColumn) + ":" + _spreadsheet.getCell(_lastRow, _lastColumn);
+    }
+
+    private boolean isVertical(){
+        if (_firstRow != _lastRow)
+            return true;
+        return false;
     }
 }

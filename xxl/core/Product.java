@@ -20,7 +20,6 @@ public class Product extends GamaOperation{
     @Override
     public int getValueAsInt() throws InvalidDataTypeException, NullContentException {
         if (!getHasChanged()) {
-            System.out.println("nao mudou");
             return _value;
         }
         int res = 1;
@@ -36,7 +35,6 @@ public class Product extends GamaOperation{
                 }
             }
         }
-        System.out.println("mudou");
         _value = res;
         setHasChanged(false);
         return res;

@@ -15,7 +15,6 @@ public class Coalesce extends GamaOperation{
     @Override
     public String getValueAsString() {
         if (!getHasChanged()){
-            System.out.println("nao mudou");
             return _value;
         }
         String res = "";
@@ -30,7 +29,6 @@ public class Coalesce extends GamaOperation{
                 }
             }
         }
-        System.out.println("mudou");
         _value = res;
         setHasChanged(false);
         return res;

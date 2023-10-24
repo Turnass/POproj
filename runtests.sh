@@ -5,9 +5,9 @@ let correct=0;
 
 for x in tests/*.in; do
     if [ -e ${x%.in}.import ]; then
-        java -cp :po-uilib.jar:. -Dimport=${x%.in}.import -Din=$x -Dout=${x%.in}.outhyp xxl.app.App;
+	    java -cp po-uilib\(2\).jar:. -Dimport=${x%.in}.import -Din=$x -Dout=${x%.in}.outhyp xxl.app.App;
     else
-        java -cp po-uilib.jar:. -Din=$x -Dout=${x%.in}.outhyp xxl.app.App;
+	    java -cp po-uilib\(2\).jar:. -Din=$x -Dout=${x%.in}.outhyp xxl.app.App;
     fi
 
     diff -cwB ${x%.in}.out ${x%.in}.outhyp > ${x%.in}.diff ;
@@ -26,6 +26,7 @@ done
 rm -f saved*
 let res=100*$correct/$total
 echo ""
+echo "Tests passed = " $correct
 echo "Total Tests = " $total
 echo "Passed = " $res"%"
 printf "$failures"
