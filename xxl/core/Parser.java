@@ -117,11 +117,11 @@ class Parser {
         int line = Integer.parseInt(address[0].trim());
         int column = Integer.parseInt(address[1]);
         if (line > _spreadsheet.getNumLines() || column > _spreadsheet.getNumColumns()){
-            Cell cell = new Cell(line - 1, column - 1);
+            Cell cell = new Cell(line, column);
             cell.setContent(new NullContent());
             return new Reference(cell);
         }
-        return new Reference(_spreadsheet.getCell(line - 1, column - 1));
+        return new Reference(_spreadsheet.getCell(line, column));
     }
 
     private Content parseFunction(String functionSpecification) throws UnrecognizedEntryException, InvalidGammaException, UnknownFunctionException /*more exceptions */ {
@@ -158,11 +158,11 @@ class Parser {
             int line = Integer.parseInt(address[0].trim());
             int column = Integer.parseInt(address[1]);
             if (line > _spreadsheet.getNumLines() || column > _spreadsheet.getNumColumns()) {
-                Cell cell = new Cell(line - 1, column - 1);
+                Cell cell = new Cell(line, column);
                 cell.setContent(new NullContent());
                 return new Reference(cell);
             }
-            return new Reference(_spreadsheet.getCell(line - 1, column - 1));
+            return new Reference(_spreadsheet.getCell(line, column));
             // pode ser diferente do anterior em parseContentExpression
         } else
             return parseLiteral(argExpression);

@@ -17,23 +17,17 @@ public class Spreadsheet implements Serializable {
     @Serial
     private static final long serialVersionUID = 202308312359L;
 
+    private CellStoreStrategy cellStoreStrategy;
     private int _numLines;
     private int _numColumns;
     private ArrayList<User> _users = new ArrayList<>();
-    private Cell[][] _cells = null;
     private CutBuffer _cutBuffer;
     private boolean _saved = true;
 
     public Spreadsheet(int numLines, int numColumns){
+        cellStoreStrategy = new MatrizCellStore(numLines, numColumns);
         _numLines = numLines;
         _numColumns = numColumns;
-        _cells = new Cell[_numLines][_numColumns];
-        for (int i = 0; i < _numLines; i++){
-            for (int j = 0; j < _numColumns;j++){
-                _cells[i][j] = new Cell(i,j);
-                _cells[i][j].setContent(new NullContent());
-            }
-        }
         _cutBuffer = new CutBuffer();
     }
     public Spreadsheet(int numLines, int numColumns, User user){
@@ -56,7 +50,7 @@ public class Spreadsheet implements Serializable {
      * @return Cell
      */
     public Cell getCell(int line, int column){
-        return _cells[line][column];
+        return cellStoreStrategy.getCell(line, column);
     }
 
     public boolean isSaved(){
@@ -75,7 +69,7 @@ public class Spreadsheet implements Serializable {
    */
 
   public void insertContent(int row, int column, Content contentSpecification) throws UnrecognizedEntryException /* FIXME maybe add exceptions */ {
-      getCell(row - 1, column - 1).setContent(contentSpecification);
+      getCell(row, column).setContent(contentSpecification);
   }
 
     /**
@@ -150,10 +144,10 @@ public class Spreadsheet implements Serializable {
       ArrayList<String> res = new ArrayList<>();
 
       if (value.charAt(0) == '\'') {
-          for (int i = 0; i < _numLines; i++) {
-              for (int j = 0; j < _numColumns; j++) {
+          for (int i = 1; i <= _numLines; i++) {
+              for (int j = 1; j <= _numColumns; j++) {
                   try {
-                      Cell tmp = _cells[i][j];
+                      Cell tmp = cellStoreStrategy.getCell(i,j);
                       if (tmp.getContent().getValueAsString().equals(value.substring(1))){
                           res.add(tmp.printCell());
                       }
@@ -161,10 +155,10 @@ public class Spreadsheet implements Serializable {
               }
           }
       }else{
-          for (int i = 0; i < _numLines; i++) {
-              for (int j = 0; j < _numColumns; j++) {
+          for (int i = 1; i <= _numLines; i++) {
+              for (int j = 1; j <= _numColumns; j++) {
                   try {
-                      Cell tmp = _cells[i][j];
+                      Cell tmp = cellStoreStrategy.getCell(i,j);
                       if (tmp.getContent().getValueAsInt() == Integer.parseInt(value)){
                           res.add(tmp.printCell());
                       }
@@ -177,9 +171,9 @@ public class Spreadsheet implements Serializable {
 
   public ArrayList<String> searchFunction(String operationName){
       ArrayList<String> res = new ArrayList<>();
-      for (int i = 0; i < _numLines; i++) {
-          for (int j = 0; j < _numColumns; j++) {
-              Cell cell = _cells[i][j];
+      for (int i = 1; i <= _numLines; i++) {
+          for (int j = 1; j <= _numColumns; j++) {
+              Cell cell = cellStoreStrategy.getCell(i,j);
               if (cell.getContent().isFunction() && cell.getContent().toString().contains(operationName)){
                   res.add(cell.printCell());
               }

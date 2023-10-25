@@ -48,8 +48,8 @@ public class Cell implements Serializable {
     }
     @Override
     public String toString() {
-        int line = _line + 1;
-        int column = _column + 1;
+        int line = _line;
+        int column = _column;
         return line + ";" + column;
     }
 }
