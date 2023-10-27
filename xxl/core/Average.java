@@ -8,7 +8,7 @@ public class Average extends GamaOperation{
 
     private int _value;
     public Average(Gamma gamma){
-        setOperationName(GamaOperations.AVERAGE);
+        setOperationName("AVERAGE");
         setArg(gamma);
         addObservers();
     }

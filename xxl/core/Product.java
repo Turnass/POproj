@@ -8,7 +8,7 @@ public class Product extends GamaOperation{
 
     private int _value;
     public Product(Gamma gamma){
-        setOperationName(GamaOperations.PRODUCT);
+        setOperationName("PRODUCT");
         setArg(gamma);
         addObservers();
     }

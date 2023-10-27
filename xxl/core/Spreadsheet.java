@@ -145,12 +145,23 @@ public class Spreadsheet implements Serializable {
   public void addUser(User user) {
       _users.add(user);
   }
-
+/*
   public ArrayList<String> search(SearchVisitor visitor){
       visitor.visit(_cellStoreStrategy);
       return visitor.getResult();
-  }
+  }*/
 
+  public ArrayList<String> search(SearchVisitor visitor){
+      ArrayList<String> res = new ArrayList<>();
+      for (int i = 1; i <= _numLines; i++){
+          for (int j = 1; j <= _numColumns; j++){
+              Cell cell = getCell(i,j);
+              if(cell.getContent().accept(visitor))
+                  res.add(cell.printCell());
+          }
+      }
+      return res;
+  }
     /**
      * creates a gamma by parsing the string range
      * @param range

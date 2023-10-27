@@ -8,7 +8,7 @@ public class Add extends BinaryOperation{
 
 
     public Add(Content first, Content second){
-        setOperationName(BinaryOperations.ADD);
+        setOperationName("ADD");
         setArg(first, 1);
         setArg(second, 2);
     }

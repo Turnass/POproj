@@ -7,7 +7,7 @@ import xxl.core.exception.UnrecognizedEntryException;
 public class Sub extends BinaryOperation{
 
     public Sub(Content first, Content second){
-        setOperationName(BinaryOperations.SUB);
+        setOperationName("SUB");
         setArg(first, 1);
         setArg(second, 2);
     }

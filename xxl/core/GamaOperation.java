@@ -2,7 +2,6 @@ package xxl.core;
 
 public abstract class GamaOperation extends Operation implements Observer{
 
-    private GamaOperations _operationName;
     private Gamma _gamma;
 
     private boolean _hasChanged = true;
@@ -27,13 +26,6 @@ public abstract class GamaOperation extends Operation implements Observer{
         _gamma.addObserver(this);
     }
 
-    public GamaOperations getOperationName(){
-        return _operationName;
-    }
-    public void setOperationName(GamaOperations op){
-        _operationName = op;
-    }
-
     public Gamma getArg(){
        return _gamma;
     }
@@ -43,6 +35,6 @@ public abstract class GamaOperation extends Operation implements Observer{
 
 
     public String toString(){
-        return "=" + _operationName + "(" + _gamma.toString() + ")";
+        return "=" + getOperationName() + "(" + _gamma.toString() + ")";
     }
 }

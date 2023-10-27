@@ -6,48 +6,54 @@ import xxl.core.exception.NullContentException;
 import java.util.ArrayList;
 
 public class SearchValue implements SearchVisitor{
-    private ArrayList<String> res = null;
-    private String _value;
+    String _value;
     public SearchValue(String value){
         _value = value;
     }
-    @Override
-    public void visit(CellStoreStrategy cellStorage) {
-        res = new ArrayList<>();
-        int numLines = cellStorage.getNumLines();
-        int numColumns = cellStorage.getNumColumns();
-        if (_value.charAt(0) == '\'') {
-            for (int i = 1; i <= numLines; i++) {
-                for (int j = 1; j <= numColumns; j++) {
-                    try {
-                        Cell tmp = cellStorage.getCell(i,j);
-                        if (tmp.getContent().getValueAsString().equals(_value.substring(1))){
-                            res.add(tmp.printCell());
-                        }
-                    }catch (InvalidDataTypeException | NullContentException e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }else{
-            for (int i = 1; i <= numLines; i++) {
-                for (int j = 1; j <= numColumns; j++) {
-                    try {
-                        Cell tmp = cellStorage.getCell(i,j);
-                        if (tmp.getContent().getValueAsInt() == Integer.parseInt(_value)){
-                            res.add(tmp.printCell());
-                        }
-                    }catch (InvalidDataTypeException | NullContentException e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
 
+    @Override
+    public boolean visit(Reference reference){
+        try {
+            if (_value.charAt(0) == '\''){
+                if (reference.getValueAsString().equals(_value.substring(1))) {
+                    return true;
+                }
+            }else{
+                if (reference.getValueAsInt() == Integer.parseInt(_value)) {
+                    return true;
+                }
+            }
+        }catch (InvalidDataTypeException | NullContentException ex){
+            ex.printStackTrace();
+        }
+        return false;
     }
 
     @Override
-    public ArrayList<String> getResult() {
-        return res;
+    public boolean visit(Literal literal) {
+        if (_value.charAt(0) == '\'') {
+            if (literal.toString().equals(_value.substring(1))) {
+                return true;
+            }
+        }else if (literal.toString().equals(_value)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean visit(Operation op) {
+        try {
+            if(_value.charAt(0) == '\'')
+                if (op.getValueAsString().equals(_value.substring(1)))
+                    return true;
+            else
+                if (op.getValueAsInt() == Integer.parseInt(_value))
+                    return true;
+                return false;
+        }catch (InvalidDataTypeException | NullContentException ex){
+            ex.printStackTrace();
+        }
+        return false;
     }
 }

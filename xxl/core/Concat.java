@@ -7,7 +7,7 @@ public class Concat extends GamaOperation{
 
     private String _value;
     public Concat(Gamma gamma){
-        setOperationName(GamaOperations.CONCAT);
+        setOperationName("CONCAT");
         setArg(gamma);
         addObservers();
     }

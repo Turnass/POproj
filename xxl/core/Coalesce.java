@@ -8,7 +8,7 @@ public class Coalesce extends GamaOperation{
 
     private String _value;
     public Coalesce(Gamma gamma){
-        setOperationName(GamaOperations.COALESCE);
+        setOperationName("COALESCE");
         setArg(gamma);
         addObservers();
     }

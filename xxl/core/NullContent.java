@@ -17,6 +17,11 @@ public class NullContent extends Content{
     }
 
     @Override
+    public boolean accept(SearchVisitor v) {
+        return false;
+    }
+
+    @Override
     public String printContent() {
         return toString();
     }

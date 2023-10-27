@@ -6,7 +6,7 @@ import xxl.core.exception.UnrecognizedEntryException;
 
 public class Mul extends BinaryOperation{
     public Mul(Content first, Content second){
-        setOperationName(BinaryOperations.MUL);
+        setOperationName("MUL");
         setArg(first, 1);
         setArg(second, 2);
     }

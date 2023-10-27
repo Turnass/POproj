@@ -27,6 +27,13 @@ public class Reference extends Content{
         return _cell.getContent().getValueAsInt();
     }
 
+    @Override
+    public boolean accept(SearchVisitor v) {
+        if(v.visit(this))
+            return true;
+        return false;
+    }
+
     public Cell getCell(){
         return _cell;
     }

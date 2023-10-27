@@ -41,7 +41,5 @@ public class MatrizCellStore implements CellStoreStrategy, Serializable {
         _cells[line][column].setContent(content);
     }
 
-    public void accept(SearchVisitor v){
-        v.visit(this);
-    }
+
 }

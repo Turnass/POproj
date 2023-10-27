@@ -14,6 +14,7 @@ public abstract class Content implements Serializable {
     public abstract String getValueAsString() throws InvalidDataTypeException, NullContentException;
     public abstract int getValueAsInt() throws InvalidDataTypeException, NullContentException;
 
+    public abstract boolean accept(SearchVisitor v);
     public abstract String printContent();
 
     public boolean isString(){
