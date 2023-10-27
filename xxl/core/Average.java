@@ -20,7 +20,6 @@ public class Average extends GamaOperation{
     @Override
     public int getValueAsInt() throws InvalidDataTypeException, NullContentException {
         if (!getHasChanged()) {
-            System.out.println("NAO MUDOU");
             return _value;
         }
         int res = 0;
@@ -41,7 +40,6 @@ public class Average extends GamaOperation{
         int finalRes = res / numCell;
         _value = finalRes;
         setHasChanged(false);
-        System.out.println("MUDOU");
         return finalRes;
 
     }

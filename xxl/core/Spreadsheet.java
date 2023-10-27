@@ -156,11 +156,12 @@ public class Spreadsheet implements Serializable {
       for (int i = 1; i <= _numLines; i++){
           for (int j = 1; j <= _numColumns; j++){
               Cell cell = getCell(i,j);
-              if(cell.getContent().accept(visitor))
+              if(cell.getContent().accept(visitor, cell))
                   res.add(cell.printCell());
           }
       }
-      return res;
+      return visitor.getResult();
+      //return res;
   }
     /**
      * creates a gamma by parsing the string range

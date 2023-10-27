@@ -17,7 +17,7 @@ public class NullContent extends Content{
     }
 
     @Override
-    public boolean accept(SearchVisitor v) {
+    public boolean accept(SearchVisitor v, Cell cell) {
         return false;
     }
 
@@ -26,9 +26,6 @@ public class NullContent extends Content{
         return toString();
     }
     @Override
-    public boolean isNull(){
-        return true;
-    }
     public String toString(){
         return "";
     }

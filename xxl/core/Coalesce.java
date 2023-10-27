@@ -20,14 +20,20 @@ public class Coalesce extends GamaOperation{
         String res = "";
         Gamma gamma = getArg();
         Spreadsheet sheet = gamma.getSpreadsheet();
+        boolean found = false;
         for (int i = gamma.getPos(Position.FIRSTROW); i <= gamma.getPos(Position.LASTROW); i++){
             for (int j = gamma.getPos(Position.FIRSTCOLUMN); j<= gamma.getPos(Position.LASTCOLUMN); j++) {
                 Content content = sheet.getCell(i, j).getContent();
-                if (content.isString()){
-                    res = content.toString();
+                try {
+                    res = content.getValueAsString();
+                    found = true;
                     break;
+                }catch (InvalidDataTypeException | NullContentException e){
+                    e.printStackTrace();
                 }
             }
+            if (found)
+                break;
         }
         _value = res;
         setHasChanged(false);

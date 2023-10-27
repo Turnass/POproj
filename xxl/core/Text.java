@@ -32,10 +32,6 @@ public class Text extends Literal{
         return _value;
     }
 
-    @Override
-    public boolean isString() {
-        return true;
-    }
 
     @Override
     public String printContent() {return "'" + toString();}

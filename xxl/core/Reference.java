@@ -13,11 +13,6 @@ public class Reference extends Content{
     }
 
     @Override
-    public boolean isReference() {
-        return true;
-    }
-
-    @Override
     public String getValueAsString() throws InvalidDataTypeException, NullContentException {
         return _cell.getContent().getValueAsString();
     }
@@ -28,10 +23,14 @@ public class Reference extends Content{
     }
 
     @Override
-    public boolean accept(SearchVisitor v) {
-        if(v.visit(this))
+    public boolean accept(SearchVisitor v, Cell cell) {
+        if(v.visit(this, cell))
             return true;
         return false;
+    }
+
+    public void accept(ObserverVisitor v, Observer obs){
+        v.visit(this, obs);
     }
 
     public Cell getCell(){
@@ -46,15 +45,16 @@ public class Reference extends Content{
     @Override
     public String printContent(){
         String str = NullContent.VALUE;
-        if (_cell.getContent().isNull())
-            return str + "=" + toString();
         try {
             return getValueAsString() + "=" + toString();
-        }catch (InvalidDataTypeException | NullContentException e){}
-
+        }catch (InvalidDataTypeException | NullContentException e){
+            e.printStackTrace();
+        }
         try {
             return getValueAsInt() + "=" + toString();
-        }catch (InvalidDataTypeException | NullContentException e){}
+        }catch (InvalidDataTypeException | NullContentException e){
+            e.printStackTrace();
+        }
 
         return str + "=" + toString();
     }

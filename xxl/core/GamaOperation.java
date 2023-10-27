@@ -5,12 +5,6 @@ public abstract class GamaOperation extends Operation implements Observer{
     private Gamma _gamma;
 
     private boolean _hasChanged = true;
-    enum GamaOperations{
-        AVERAGE,
-        PRODUCT,
-        CONCAT,
-        COALESCE;
-    }
 
     @Override
     public void update() {

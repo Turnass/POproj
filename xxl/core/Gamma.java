@@ -152,14 +152,12 @@ public class Gamma implements Serializable {
     }
 
     public void addObserver(Observer obs){
+        ObserverVisitor visitor = new ReferenceObserver();
         for (int i = _firstRow; i <= _lastRow; i++){
             for (int j = _firstColumn; j<= _lastColumn; j++){
                 Cell cell = _spreadsheet.getCell(i,j);
                 cell.add(obs);
-                if (cell.getContent().isReference()) {
-                    Reference reference = (Reference) cell.getContent();
-                    reference.getCell().add(obs);
-                }
+                cell.getContent().accept(visitor, obs);
             }
         }
     }

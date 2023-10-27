@@ -29,7 +29,7 @@ class DoInsert extends Command<Spreadsheet> {
     }catch (InvalidGammaException e) {
       throw new InvalidCellRangeException(stringField("gamma"));
     }catch (UnrecognizedEntryException e){
-
+      e.printStackTrace();
     }
   }
 }

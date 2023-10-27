@@ -14,25 +14,12 @@ public abstract class Content implements Serializable {
     public abstract String getValueAsString() throws InvalidDataTypeException, NullContentException;
     public abstract int getValueAsInt() throws InvalidDataTypeException, NullContentException;
 
-    public abstract boolean accept(SearchVisitor v);
+    public abstract boolean accept(SearchVisitor v, Cell cell);
+    public void accept(ObserverVisitor v, Observer obs){
+        //Do nothing, override in reference
+    }
     public abstract String printContent();
 
-    public boolean isString(){
-        // Default result is false, override on Text
-        return false;
-    }
 
-    public boolean isFunction(){
-        // Default result is false, override on Operation
-        return false;
-    }
-    public boolean isNull(){
-        // Default result is false, override on NullContent
-        return false;
-    }
-    public boolean isReference(){
-        // Default result is false, override on Reference
-        return false;
-    }
 
 }
