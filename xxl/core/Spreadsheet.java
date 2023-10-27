@@ -4,8 +4,6 @@ package xxl.core;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 import xxl.core.exception.*;
 
@@ -17,7 +15,7 @@ public class Spreadsheet implements Serializable {
     @Serial
     private static final long serialVersionUID = 202308312359L;
 
-    private CellStoreStrategy cellStoreStrategy;
+    private CellStoreStrategy _cellStoreStrategy;
     private int _numLines;
     private int _numColumns;
     private ArrayList<User> _users = new ArrayList<>();
@@ -25,7 +23,7 @@ public class Spreadsheet implements Serializable {
     private boolean _saved = true;
 
     public Spreadsheet(int numLines, int numColumns){
-        cellStoreStrategy = new MatrizCellStore(numLines, numColumns);
+        _cellStoreStrategy = new MatrizCellStore(numLines, numColumns);
         _numLines = numLines;
         _numColumns = numColumns;
         _cutBuffer = new CutBuffer();
@@ -50,7 +48,7 @@ public class Spreadsheet implements Serializable {
      * @return Cell
      */
     public Cell getCell(int line, int column){
-        return cellStoreStrategy.getCell(line, column);
+        return _cellStoreStrategy.getCell(line, column);
     }
 
     public boolean isSaved(){
@@ -137,55 +135,21 @@ public class Spreadsheet implements Serializable {
       }
     }
 
-    public ArrayList<String> showClipboard() throws UnrecognizedEntryException {
-        return _cutBuffer.getClipboard().printGamma();
+    public ArrayList<String> showClipboard(){
+      Gamma gamma = _cutBuffer.getClipboard();
+      if (gamma == null)
+          return null;
+      return gamma.printGamma();
     }
-  public ArrayList<String> searchValue(String value){
-      ArrayList<String> res = new ArrayList<>();
 
-      if (value.charAt(0) == '\'') {
-          for (int i = 1; i <= _numLines; i++) {
-              for (int j = 1; j <= _numColumns; j++) {
-                  try {
-                      Cell tmp = cellStoreStrategy.getCell(i,j);
-                      if (tmp.getContent().getValueAsString().equals(value.substring(1))){
-                          res.add(tmp.printCell());
-                      }
-                  }catch (InvalidDataTypeException | NullContentException e){}
-              }
-          }
-      }else{
-          for (int i = 1; i <= _numLines; i++) {
-              for (int j = 1; j <= _numColumns; j++) {
-                  try {
-                      Cell tmp = cellStoreStrategy.getCell(i,j);
-                      if (tmp.getContent().getValueAsInt() == Integer.parseInt(value)){
-                          res.add(tmp.printCell());
-                      }
-                  }catch (InvalidDataTypeException | NullContentException e){}
-              }
-          }
-      }
-      return res;
-  }
-
-  public ArrayList<String> searchFunction(String operationName){
-      ArrayList<String> res = new ArrayList<>();
-      for (int i = 1; i <= _numLines; i++) {
-          for (int j = 1; j <= _numColumns; j++) {
-              Cell cell = cellStoreStrategy.getCell(i,j);
-              if (cell.getContent().isFunction() && cell.getContent().toString().contains(operationName)){
-                  res.add(cell.printCell());
-              }
-          }
-      }
-      Collections.sort(res, new FunctionComparator());
-      return res;
-  }
   public void addUser(User user) {
       _users.add(user);
   }
 
+  public ArrayList<String> search(SearchVisitor visitor){
+      visitor.visit(_cellStoreStrategy);
+      return visitor.getResult();
+  }
 
     /**
      * creates a gamma by parsing the string range

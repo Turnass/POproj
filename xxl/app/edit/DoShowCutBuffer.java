@@ -12,16 +12,14 @@ class DoShowCutBuffer extends Command<Spreadsheet> {
 
   DoShowCutBuffer(Spreadsheet receiver) {
     super(Label.SHOW_CUT_BUFFER, receiver);
-    addStringField("gamma", Message.address());
   }
   
   @Override
   protected final void execute() {
-    try {
-      _display.addAll(_receiver.showClipboard());
-      _display.display();
-    } catch (UnrecognizedEntryException e) {
-
+    if (_receiver.showClipboard() == null){
+      return;
     }
+    _display.addAll(_receiver.showClipboard());
+    _display.display();
   }
 }

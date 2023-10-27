@@ -29,5 +29,9 @@ public abstract class Content implements Serializable {
         // Default result is false, override on NullContent
         return false;
     }
+    public boolean isReference(){
+        // Default result is false, override on Reference
+        return false;
+    }
 
 }

@@ -142,7 +142,6 @@ public class Gamma implements Serializable {
         return _spreadsheet;
     }
 
-    //public void getContent(){}
 
     public void deleteContent(){
         for (int i = _firstRow; i <= _lastRow; i++){
@@ -155,7 +154,12 @@ public class Gamma implements Serializable {
     public void addObserver(Observer obs){
         for (int i = _firstRow; i <= _lastRow; i++){
             for (int j = _firstColumn; j<= _lastColumn; j++){
-                _spreadsheet.getCell(i,j).add(obs);
+                Cell cell = _spreadsheet.getCell(i,j);
+                cell.add(obs);
+                if (cell.getContent().isReference()) {
+                    Reference reference = (Reference) cell.getContent();
+                    reference.getCell().add(obs);
+                }
             }
         }
     }

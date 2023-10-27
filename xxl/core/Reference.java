@@ -11,6 +11,12 @@ public class Reference extends Content{
     public Reference(Cell cell){
         _cell = cell;
     }
+
+    @Override
+    public boolean isReference() {
+        return true;
+    }
+
     @Override
     public String getValueAsString() throws InvalidDataTypeException, NullContentException {
         return _cell.getContent().getValueAsString();
@@ -21,6 +27,9 @@ public class Reference extends Content{
         return _cell.getContent().getValueAsInt();
     }
 
+    public Cell getCell(){
+        return _cell;
+    }
 
     @Override
     public String toString() {
