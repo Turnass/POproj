@@ -2,7 +2,6 @@ package xxl.core;
 
 import xxl.core.exception.InvalidDataTypeException;
 import xxl.core.exception.NullContentException;
-import xxl.core.exception.UnrecognizedEntryException;
 
 public class Div extends BinaryOperation{
     public Div(Content first, Content second){
@@ -21,7 +20,7 @@ public class Div extends BinaryOperation{
     public int getValueAsInt() throws InvalidDataTypeException, NullContentException {
         try {
             return getArg(1).getValueAsInt() / getArg(2).getValueAsInt();
-        }catch (InvalidDataTypeException | NullContentException e){
+        }catch (InvalidDataTypeException | NullContentException | ArithmeticException e){
             throw e;
         }
     }

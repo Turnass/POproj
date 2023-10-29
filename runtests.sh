@@ -2,12 +2,14 @@
 
 let total=0;
 let correct=0;
+poUilib=( ./po-uilib*.jar );
+firstEl=${poUilib[0]};
 
 for x in tests/*.in; do
     if [ -e ${x%.in}.import ]; then
-	    java -cp po-uilib\(2\).jar:. -Dimport=${x%.in}.import -Din=$x -Dout=${x%.in}.outhyp xxl.app.App;
+      java -cp $firstEl:. -Dimport=${x%.in}.import -Din=$x -Dout=${x%.in}.outhyp xxl.app.App;
     else
-	    java -cp po-uilib\(2\).jar:. -Din=$x -Dout=${x%.in}.outhyp xxl.app.App;
+      java -cp $firstEl:. -Din=$x -Dout=${x%.in}.outhyp xxl.app.App;
     fi
 
     diff -cwB ${x%.in}.out ${x%.in}.outhyp > ${x%.in}.diff ;

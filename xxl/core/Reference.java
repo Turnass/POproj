@@ -46,7 +46,7 @@ public class Reference extends Content{
     public String printContent(){
         String str = NullContent.VALUE;
         try {
-            return getValueAsString() + "=" + toString();
+            return "'" + getValueAsString() + "=" + toString();
         }catch (InvalidDataTypeException | NullContentException e){
             e.printStackTrace();
         }

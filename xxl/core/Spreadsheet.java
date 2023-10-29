@@ -28,35 +28,45 @@ public class Spreadsheet implements Serializable {
         _numColumns = numColumns;
         _cutBuffer = new CutBuffer();
     }
-    public Spreadsheet(int numLines, int numColumns, User user){
-        this(numLines, numColumns);
-        addUser(user);
-    }
 
+    /**
+     * @return the number of Lines of the Spreadsheet
+     */
     public int getNumLines(){
         return _numLines;
     }
+
+    /**
+     * @return the number of Columns of the Spreadsheet
+     */
     public int getNumColumns(){
         return _numColumns;
     }
 
-
     /**
-     *
      * @param line
      * @param column
-     * @return Cell
+     * @return Cell in the specified address
      */
     public Cell getCell(int line, int column){
         return _cellStoreStrategy.getCell(line, column);
     }
 
+    /**
+     * @return the _saved variable
+     */
     public boolean isSaved(){
         return _saved;
     }
+
+    /**
+     * Sets the _saved variable to the given boolean
+     * @param bool
+     */
     public void setSaved(boolean bool){
         _saved = bool;
     }
+
     /**
    * Insert specified content in specified address.
    *
@@ -65,13 +75,12 @@ public class Spreadsheet implements Serializable {
    * @param contentSpecification the specification of the content to put
    *        in the specified cell.
    */
-
   public void insertContent(int row, int column, Content contentSpecification) throws UnrecognizedEntryException /* FIXME maybe add exceptions */ {
       getCell(row, column).setContent(contentSpecification);
   }
 
     /**
-     *
+     * Inserts the content in the given gamma
      * @param range
      * @param content
      * @throws InvalidGammaException
@@ -89,7 +98,7 @@ public class Spreadsheet implements Serializable {
   }
 
     /**
-     *
+     * Deletes the Content in the given gamma
      * @param range
      * @throws InvalidGammaException
      */
@@ -102,6 +111,12 @@ public class Spreadsheet implements Serializable {
           throw ex;
       }
   }
+
+    /**
+     * Copies the Gamma in the given range to the clipboard
+     * @param range
+     * @throws InvalidGammaException
+     */
     public void copy(String range) throws InvalidGammaException {
       try {
           Gamma gamma = createGamma(range).createClipboard();
@@ -110,6 +125,12 @@ public class Spreadsheet implements Serializable {
           throw e;
       }
     }
+
+    /**
+     * Pastes the content of the clipboard to the specified range
+     * @param range
+     * @throws InvalidGammaException
+     */
     public void paste(String range) throws InvalidGammaException {
       if (_cutBuffer.getClipboard() == null)
           return;
@@ -135,6 +156,10 @@ public class Spreadsheet implements Serializable {
       }
     }
 
+    /**
+     * Shows the Clipboard
+     * @return the
+     */
     public ArrayList<String> showClipboard(){
       Gamma gamma = _cutBuffer.getClipboard();
       if (gamma == null)
@@ -145,11 +170,6 @@ public class Spreadsheet implements Serializable {
   public void addUser(User user) {
       _users.add(user);
   }
-/*
-  public ArrayList<String> search(SearchVisitor visitor){
-      visitor.visit(_cellStoreStrategy);
-      return visitor.getResult();
-  }*/
 
   public ArrayList<String> search(SearchVisitor visitor){
       ArrayList<String> res = new ArrayList<>();
@@ -161,7 +181,6 @@ public class Spreadsheet implements Serializable {
           }
       }
       return visitor.getResult();
-      //return res;
   }
     /**
      * creates a gamma by parsing the string range

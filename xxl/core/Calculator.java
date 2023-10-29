@@ -91,6 +91,7 @@ public class Calculator implements Serializable {
 
 
     /**
+     * Sets the filename name to the file received
      * @param filename
      */
     private void setFilename(String filename) {_filename = filename;}

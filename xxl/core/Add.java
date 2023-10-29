@@ -2,7 +2,6 @@ package xxl.core;
 
 import xxl.core.exception.InvalidDataTypeException;
 import xxl.core.exception.NullContentException;
-import xxl.core.exception.UnrecognizedEntryException;
 
 public class Add extends BinaryOperation{
 

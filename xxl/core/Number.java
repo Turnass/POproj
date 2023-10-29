@@ -11,7 +11,6 @@ public class Number extends Literal{
     }
 
     /**
-     *
      * @return Literal value - int
      */
     public int getValueAsInt(){
@@ -19,7 +18,6 @@ public class Number extends Literal{
     }
 
     /**
-     *
      * @throws InvalidDataTypeException
      */
     public String getValueAsString() throws InvalidDataTypeException {

@@ -1,11 +1,12 @@
 package xxl.core;
 
-import xxl.core.exception.UnrecognizedEntryException;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Represents a subset of cells (Gamma) within a spreadsheet.
+ */
 public class Gamma implements Serializable {
 
     @Serial
@@ -15,6 +16,16 @@ public class Gamma implements Serializable {
     private int _lastRow;
     private int _firstColumn;
     private int _lastColumn;
+
+    /**
+     * Constructor for the Gamma class.
+     *
+     * @param firstRow     The first row of the gamma.
+     * @param lastRow      The last row of the gamma.
+     * @param firstColumn  The first column of the gamma.
+     * @param lastColumn   The last column of the gamma.
+     * @param sheet        The spreadsheet to which the gamma belongs.
+     */
     public Gamma(int firstRow, int lastRow, int firstColumn, int lastColumn, Spreadsheet sheet){
         _firstRow = firstRow;
         _lastRow = lastRow;
@@ -23,6 +34,11 @@ public class Gamma implements Serializable {
         _spreadsheet = sheet;
     }
 
+    /**
+     * Calculates the total number of cells in the gamma.
+     *
+     * @return The total count of cells within the gamma.
+     */
     public int getSize(){
         int res = 0;
         for (int i = _firstRow; i <= _lastRow; i++){
@@ -33,6 +49,11 @@ public class Gamma implements Serializable {
         return res;
     }
 
+    /**
+     * Retrieves the contents of all cells within the gamma.
+     *
+     * @return An array list containing the content of each cell in the gamma.
+     */
     public ArrayList<Content> getContents(){
         ArrayList<Content> contents = new ArrayList<>();
         for (int i = _firstRow; i <= _lastRow; i++){
@@ -43,6 +64,11 @@ public class Gamma implements Serializable {
         return contents;
     }
 
+    /**
+     * Sets the content of cells within the gamma.
+     *
+     * @param contents An array list containing the contents to be set for each cell in the gamma.
+     */
     public void setContents(ArrayList<Content> contents){
         int contentNumber = 0;
         for (int i = _firstRow; i <= _lastRow; i++){
@@ -53,6 +79,10 @@ public class Gamma implements Serializable {
         }
     }
 
+    /**
+     * Creates a clipboard
+     * @return Gamma
+     */
     public Gamma createClipboard(){
         int size = getSize();
         int firstLine, lastLine, firstColumn, lastColumn;
@@ -74,16 +104,10 @@ public class Gamma implements Serializable {
         return new Gamma(firstLine, lastLine, firstColumn, lastColumn, sheet);
     }
 
-    public Gamma makeDeepCopy(){
-        Spreadsheet sheet = new Spreadsheet(_lastRow, _lastColumn);
-        for (int i = 1; i <= sheet.getNumLines(); i++){
-            for (int j = 1; j<= sheet.getNumColumns(); j++){
-                sheet.getCell(i,j).setContent(_spreadsheet.getCell(i,j).getContent());
-            }
-        }
-        return new Gamma(_firstRow, _lastRow, _firstColumn, _lastColumn, sheet);
-    }
-
+    /**
+     * Prints the gamma
+     * @return Arraylist of Strings
+     */
     public ArrayList<String> printGamma() {
         ArrayList<String> _gamma = new ArrayList<>();
         for (int i = _firstRow; i <= _lastRow; i++){
@@ -94,6 +118,10 @@ public class Gamma implements Serializable {
         return _gamma;
     }
 
+    /**
+     * Insert the given content in the gamma
+     * @param content
+     */
     public void insertContent(Content content){
         for (int i = _firstRow; i <= _lastRow; i++){
             for (int j = _firstColumn; j<= _lastColumn; j++){
@@ -101,6 +129,11 @@ public class Gamma implements Serializable {
             }
         }
     }
+
+    /**
+     * Insert contents to the end of the spreadsheet
+     * @param gamma
+     */
     public void insertContentsUntilEnd(Gamma gamma){
         if (gamma.isVertical()){
             for (int i = gamma._firstRow; i <= gamma._lastRow; i++){
@@ -117,6 +150,9 @@ public class Gamma implements Serializable {
         }
     }
 
+    /**
+     * @param gamma
+     */
     public void insertGamma(Gamma gamma){
        if (gamma == null) {
            return;
@@ -129,6 +165,10 @@ public class Gamma implements Serializable {
        }
     }
 
+    /**
+     * @param pos
+     * @return
+     */
     public int getPos(Position pos) {
        return switch (pos){
            case FIRSTROW -> _firstRow;
@@ -138,6 +178,9 @@ public class Gamma implements Serializable {
        };
     }
 
+    /**
+     * @return the spreadsheet
+     */
     public Spreadsheet getSpreadsheet(){
         return _spreadsheet;
     }
@@ -151,6 +194,10 @@ public class Gamma implements Serializable {
         }
     }
 
+    /**
+     * Add observer to the cells
+     * @param obs
+     */
     public void addObserver(Observer obs){
         ObserverVisitor visitor = new ReferenceObserver();
         for (int i = _firstRow; i <= _lastRow; i++){
