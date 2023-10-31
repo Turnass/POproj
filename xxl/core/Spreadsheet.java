@@ -29,6 +29,13 @@ public class Spreadsheet implements Serializable {
         _cutBuffer = new CutBuffer();
     }
 
+  public int getNumUsers(){
+    int res = 0;
+    for (User u : _users){
+      res++;
+    }
+    return res;
+  }
     /**
      * @return the number of Lines of the Spreadsheet
      */

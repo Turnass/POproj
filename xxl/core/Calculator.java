@@ -26,6 +26,20 @@ public class Calculator implements Serializable {
         _spreadsheet = null;
     }
 
+    public ArrayList<String> removeSpreadsheets(int numUsers){
+        ArrayList<Spreadsheet> sheets = _repo.getAllSheets();
+        ArrayList<String> res = new ArrayList<>();
+        int numRemoved = 0;
+        for (Spreadsheet sheet : sheets){
+          if (sheet.getNumUsers() < numUsers)
+          res.add(sheet.getNumLines() + sheet.getNumColumns());
+          numRemoved++;
+        }
+        res.add("O numero de sheets apagadas foi" + numRemoved);
+        
+        return res; 
+    }
+
     /**
      *
      * @param numLines

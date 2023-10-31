@@ -12,24 +12,19 @@ import java.io.IOException;
 /**
  * Save to file under current name (if unnamed, query for name).
  */
-class DoSave extends Command<Calculator> {
+class DoRemove extends Command<Calculator> {
 
-  DoSave(Calculator receiver) {
-    super(Label.SAVE, receiver, xxl -> xxl.getSpreadsheet() != null);
+  DoRemove(Calculator receiver) {
+    super("Remove Folhas", receiver);
   }
   
   @Override
   protected final void execute() throws FileOpenFailedException {
     try {
-      if (_receiver.getFilename() != null) {
-        _receiver.save();
-      } else {
-        String name = Form.requestString(Message.newSaveAs());
-        if (name.length() > 10){
-           throw new InvalidCellRangeException(name);
-        }
-        _receiver.saveAs(name);
-      }
+        int numUsers = Form.requestInteger();
+        _display.addAll(_receiver.removeSpreadsheets(numUsers));
+        _display.display();
+
     } catch (IOException | MissingFileAssociationException e) {
       throw new FileOpenFailedException(e);
     }

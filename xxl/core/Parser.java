@@ -180,7 +180,8 @@ class Parser {
             case "CONCAT" -> new Concat(gamma);
             case "COALESCE" -> new Coalesce(gamma);
             case "PRODUCT" -> new Product(gamma);
-            case "AVERAGE" -> new Average(gamma) ;
+            case "AVERAGE" -> new Average(gamma);
+            case "INTMINIMO" -> new IntMinimo(gamma);
             default -> throw new UnknownFunctionException(functionName);
         };
     }

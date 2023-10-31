@@ -36,7 +36,12 @@ class DoOpen extends Command<Calculator> {
                   if (_receiver.getFilename() != null) {
                       _receiver.save();
                   } else {
-                      _receiver.saveAs(Form.requestString(Message.newSaveAs()));
+                      String name = Form.requestString(Message.newSaveAs());
+                      
+                      if (name.length() > 10){
+                        throw new InvalidCellRangeException(name);
+                      }
+                      _receiver.saveAs(name);
                   }
               } catch (IOException | MissingFileAssociationException e) {
                   throw new FileOpenFailedException(e);

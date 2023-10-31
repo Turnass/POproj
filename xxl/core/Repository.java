@@ -32,6 +32,9 @@ public class Repository implements Serializable {
     public Spreadsheet getSpreadsheet(){
         return _sheet;
     }
+    public ArrayList<Spreadsheet> getAllSheets(){
+        return _spreadsheets;
+    }
     public void setUser(User user){
         _user = user;
     }
